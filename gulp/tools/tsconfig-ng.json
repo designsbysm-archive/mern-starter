@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "lib": [
+            "DOM",
+            "ES6"
+        ],
+        "module": "none",
+        "noImplicitAny": true,
+        "outFile": "client.min.js",
+        "removeComments": true,
+        "skipLibCheck": true,
+        "target": "es5"
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}

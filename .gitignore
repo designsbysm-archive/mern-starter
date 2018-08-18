@@ -1,0 +1,7 @@
+#IDE Files
+.idea/httpRequests
+.idea/workspace.xml
+
+#Project
+dist
+.env

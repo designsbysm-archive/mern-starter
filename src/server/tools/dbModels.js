@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Vehicle = require('../models/Vehicle');
 
 module.exports = {
     getModel: kind => {
@@ -7,6 +8,10 @@ module.exports = {
         switch (kind) {
             case 'users':
                 model = User;
+                break;
+
+            case 'vehicles':
+                model = Vehicle;
                 break;
         }
 

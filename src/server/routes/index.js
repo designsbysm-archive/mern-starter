@@ -6,6 +6,7 @@ router.use(bodyParser.json({ limit: '50mb' }));
 router.use(require('../middleware/addAuthToken'));
 router.use(require('../middleware/checkAuthRole'));
 router.use(require('../middleware/errors'));
+require('../middleware/passport');
 
 // api endpoints
 router.use('/api', require('./api/index'));

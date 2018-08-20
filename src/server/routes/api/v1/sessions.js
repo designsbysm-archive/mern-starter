@@ -1,34 +1,18 @@
 const router = require('express').Router();
-const config = require('../../../config');
-const dbModels = require('../../../tools/dbModels');
-const Model = dbModels.getModel('users');
+const passport = require('passport');
 
 router.post('/', (req, res, next) => {
-    Model.findOne({
-        username: req.body.username,
-    })
-        .collation({ locale: 'en', strength: 2 })
-        .select('password')
-        .select('username')
-        .select('updatedAt')
-        .select('role')
-        .exec((err, user) => {
-            if (err) {
-                return next(err);
-            }
+    passport.authenticate('local', { session: false }, (err, token) => {
+        if (err) {
+            return next(err);
+        }
 
-            if (!user || !req.body.password) {
-                return res.sendStatus(401);
-            }
+        if (!token) {
+            return res.sendStatus(401);
+        }
 
-            if (user.validatePasswordHash(req.body.password)) {
-                res.json({
-                    token: user.generateToken(config.secret),
-                });
-            } else {
-                return res.sendStatus(401);
-            }
-        });
+        res.json(token);
+    })(req, res, next);
 });
 
 module.exports = router;

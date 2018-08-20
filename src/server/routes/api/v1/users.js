@@ -1,22 +1,18 @@
 const router = require('express').Router();
 const authTools = require('../../../tools/authTools');
-const bcrypt = require('bcrypt');
 const dbModels = require('../../../tools/dbModels');
 const config = require('../../../config');
-const jwt = require('jwt-simple');
 const Model = dbModels.getModel('users');
 
 router.get('/', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, '*') || !req.headers.authorization) {
+    if (!req.checkAuthRole('*') || !req.headers.authorization) {
         return res.sendStatus(401);
     }
 
-    let authHeader = req.headers.authorization;
-    authHeader = authHeader.replace('Bearer ', '');
+    const model = new Model();
+    const token = model.decodeToken(req.headers.authorization, config.secret);
 
-    const auth = jwt.decode(authHeader, config.secret);
-
-    Model.findOne({ username: auth.username }, (err, user) => {
+    Model.findOne({ username: token.username }, (err, user) => {
         if (err) {
             return next(err);
         }
@@ -26,51 +22,36 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, 'admin')) {
+    if (!req.checkAuthRole('admin')) {
         return res.sendStatus(401);
     }
 
     const user = new Model(req.body);
+    user.password = user.generatePasswordHash(req.body.password);
 
-    bcrypt.hash(req.body.password, 10, (err, hash) => {
-        if (err) {
+    user.save(error => {
+        if (error) {
             return next(err);
         }
 
-        user.password = hash;
-
-        user.save(error => {
-            if (error) {
-                return next(err);
-            }
-
-            res.sendStatus(201);
-        });
+        res.sendStatus(201);
     });
 });
 
 router.put('/:id', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, 'admin')) {
+    if (!req.checkAuthRole('admin')) {
         return res.sendStatus(401);
     }
 
     const id = req.params.id;
+    const user = new Model();
+    req.body.password = user.generatePasswordHash(req.body.password);
 
-    if (req.body.password) {
-        bcrypt.hash(req.body.password, 10, (err, hash) => {
-            if (err) {
-                return next(err);
-            }
-
-            req.body.password = hash;
-
-            Model.findOneAndUpdate({ _id: id }, req.body, { new: true }).then(() => {
-                res.sendStatus(200);
-            }).catch(error => {
-                next(error);
-            });
-        });
-    }
+    Model.findOneAndUpdate({ _id: id }, req.body, { new: true }).then(() => {
+        res.sendStatus(200);
+    }).catch(error => {
+        next(error);
+    });
 });
 
 router.post('/query', (req, res, next) => {

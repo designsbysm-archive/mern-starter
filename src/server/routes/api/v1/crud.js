@@ -1,12 +1,11 @@
 const router = require('express').Router({ mergeParams: true });
-const authTools = require('../../../tools/authTools');
 const dbModels = require('../../../tools/dbModels');
 const dbTools = require('../../../tools/dbTools');
 const jsonStream = require('JSONStream');
 const mongoose = require('mongoose');
 
 router.delete('/', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, 'admin')) {
+    if (!req.checkAuthRole('admin')) {
         return res.sendStatus(401);
     }
 
@@ -21,7 +20,7 @@ router.delete('/', (req, res, next) => {
 });
 
 router.delete('/:id', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, 'admin')) {
+    if (!req.checkAuthRole('admin')) {
         return res.sendStatus(401);
     }
 
@@ -37,7 +36,7 @@ router.delete('/:id', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, '*')) {
+    if (!req.checkAuthRole('*')) {
         return res.sendStatus(401);
     }
 
@@ -55,7 +54,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, '*')) {
+    if (!req.checkAuthRole('*')) {
         return res.sendStatus(401);
     }
 
@@ -71,7 +70,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, 'super')) {
+    if (!req.checkAuthRole('super')) {
         return res.sendStatus(401);
     }
     if (!req.body) {
@@ -92,7 +91,7 @@ router.post('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, 'super')) {
+    if (!req.checkAuthRole('super')) {
         return res.sendStatus(401);
     }
 
@@ -118,7 +117,7 @@ router.put('/', (req, res, next) => {
 });
 
 router.put('/:id', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, 'super')) {
+    if (!req.checkAuthRole('super')) {
         return res.sendStatus(401);
     }
 
@@ -134,7 +133,7 @@ router.put('/:id', (req, res, next) => {
 });
 
 router.post('/import', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, 'super')) {
+    if (!req.checkAuthRole('super')) {
         return res.sendStatus(401);
     }
     if (!req.body) {
@@ -164,7 +163,7 @@ router.post('/import', (req, res, next) => {
 });
 
 router.post('/query', (req, res, next) => {
-    if (!authTools.checkAuth(req.auth, '*')) {
+    if (!req.checkAuthRole('*')) {
         return res.sendStatus(401);
     }
 

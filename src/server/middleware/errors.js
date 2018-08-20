@@ -3,8 +3,8 @@ const log = require('fancy-log');
 module.exports = (err, req, res, next) => {
     let code = 500;
     const result = {
-        message: 'unknown error',
         status: 'error',
+        message: 'unknown error', // tsline:disable-line
     };
 
     if (err instanceof Error) {
@@ -19,6 +19,10 @@ module.exports = (err, req, res, next) => {
             }
 
         } else if (err.name === 'MongoError' || err.message === 'Signature verification failed') {
+            result.message = err.message;
+
+        } else if (err.name === 'TokenExpiredError' || err.message === 'jwt expired') {
+            code = 401;
             result.message = err.message;
 
         } else {

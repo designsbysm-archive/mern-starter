@@ -14,7 +14,7 @@
         "gulp-htmlmin": "^4.0.0",
         "gulp-typescript": "^4.0.2",
         "ip": "^1.1.5",
-        "jwt-simple": "^0.5.1",
+        "jsonwebtoken": "^8.3.0",
         "mongoose": "^5.2.9",
         "mongoose-timestamp": "^0.6.0",
         "morgan": "^1.9.0",

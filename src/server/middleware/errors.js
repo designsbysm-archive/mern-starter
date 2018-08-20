@@ -21,7 +21,7 @@ module.exports = (err, req, res, next) => {
         } else if (err.name === 'MongoError' || err.message === 'Signature verification failed') {
             result.message = err.message;
 
-        } else if (err.name === 'TokenExpiredError' || err.message === 'jwt expired') {
+        } else if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') {
             code = 401;
             result.message = err.message;
 

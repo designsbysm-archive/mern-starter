@@ -3,15 +3,18 @@ const passport = require('passport');
 const dbModels = require('../tools/dbModels');
 const LocalStrategy = require('passport-local').Strategy;
 const Model = dbModels.getModel('users');
+const passportJWT = require('passport-jwt');
+const JWTStrategy = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 
 passport.use(new LocalStrategy(
-    function (username, password, done) {
+    (username, password, done) => {
         Model.findOne({ username: username, })
             .collation({ locale: 'en', strength: 2 })
+            .select('_id')
             .select('password')
-            .select('username')
-            .select('updatedAt')
             .select('role')
+            .select('updatedAt')
             .exec((err, user) => {
                 if (err) {
                     return done(err);
@@ -30,5 +33,19 @@ passport.use(new LocalStrategy(
                 }
             });
 
+    }
+));
+
+passport.use(new JWTStrategy({
+        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+        secretOrKey: config.secret,
+    },
+    (jwtPayload, done) => {
+        // find the user, make sure they haven't been updated
+        Model.findOne({ _id: jwtPayload.id, updatedAt: jwtPayload.updated }).then(user => {
+            return done(null, user);
+        }).catch(err => {
+            return done(err);
+        });
     }
 ));

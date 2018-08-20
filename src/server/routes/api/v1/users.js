@@ -5,14 +5,10 @@ const config = require('../../../config');
 const Model = dbModels.getModel('users');
 
 router.get('/', (req, res, next) => {
-    if (!req.checkAuthRole('*') || !req.headers.authorization) {
-        return res.sendStatus(401);
-    }
-
     const model = new Model();
     const token = model.decodeToken(req.headers.authorization, config.secret);
 
-    Model.findOne({ username: token.username }, (err, user) => {
+    Model.findOne({ _id: token.id }, (err, user) => {
         if (err) {
             return next(err);
         }

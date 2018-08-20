@@ -36,10 +36,6 @@ router.delete('/:id', (req, res, next) => {
 });
 
 router.get('/', (req, res, next) => {
-    if (!req.checkAuthRole('*')) {
-        return res.sendStatus(401);
-    }
-
     const kind = req.params.kind;
     const Model = dbModels.getModel(kind);
 
@@ -54,10 +50,6 @@ router.get('/', (req, res, next) => {
 });
 
 router.get('/:id', (req, res, next) => {
-    if (!req.checkAuthRole('*')) {
-        return res.sendStatus(401);
-    }
-
     const id = req.params.id;
     const kind = req.params.kind;
     const Model = dbModels.getModel(kind);
@@ -144,8 +136,6 @@ router.post('/import', (req, res, next) => {
     const Model = dbModels.getModel(kind);
     const queue = [];
 
-    // console.log(req.body);
-
     // add one at a time (make sure added & updated properties add included)
     req.body.forEach(item => {
         const create = new Model(
@@ -163,10 +153,6 @@ router.post('/import', (req, res, next) => {
 });
 
 router.post('/query', (req, res, next) => {
-    if (!req.checkAuthRole('*')) {
-        return res.sendStatus(401);
-    }
-
     const kind = req.params.kind;
     const Model = dbModels.getModel(kind);
     const query = dbTools.parseFindQuery(req.body);

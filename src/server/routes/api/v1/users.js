@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const authTools = require('../../../tools/authTools');
 const dbModels = require('../../../tools/dbModels');
 const config = require('../../../config');
 const Model = dbModels.getModel('users');

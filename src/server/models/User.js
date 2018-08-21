@@ -29,7 +29,7 @@ schema.methods.generateToken = function (secret) {
         id: this._id,
         role: this.role,
         updated: this.updatedAt,
-    }, secret, { expiresIn: 60 * 60 * 24 });
+    }, secret, { expiresIn: '1d' });
 };
 
 schema.methods.generatePasswordHash = function (password) {

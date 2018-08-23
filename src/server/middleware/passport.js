@@ -9,12 +9,12 @@ const ExtractJWT = passportJWT.ExtractJwt;
 
 passport.use(new LocalStrategy(
     (username, password, done) => {
-        Model.findOne({ username: username, })
+        Model.findOne({ username: username })
             .collation({ locale: 'en', strength: 2 })
-            .select('_id')
             .select('password')
             .select('role')
             .select('updatedAt')
+            .select('username')
             .exec((err, user) => {
                 if (err) {
                     return done(err);
@@ -27,13 +27,14 @@ passport.use(new LocalStrategy(
                 if (user.validatePasswordHash(password)) {
                     return done(null, {
                         token: user.generateToken(config.secret),
+                        user: user,
                     });
                 } else {
                     return done(null, false, { message: 'unauthorized' });
                 }
             });
 
-    }
+    },
 ));
 
 passport.use(new JWTStrategy({
@@ -42,10 +43,10 @@ passport.use(new JWTStrategy({
     },
     (jwtPayload, done) => {
         // find the user, make sure they haven't been updated
-        Model.findOne({ _id: jwtPayload.id, updatedAt: jwtPayload.updated }).then(user => {
+        Model.findOne({ username: jwtPayload.username, updatedAt: jwtPayload.updated }).then(user => {
             return done(null, user);
         }).catch(err => {
             return done(err);
         });
-    }
+    },
 ));

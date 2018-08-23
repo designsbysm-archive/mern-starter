@@ -7,7 +7,7 @@ router.get('/', (req, res, next) => {
     const model = new Model();
     const token = model.decodeToken(req.headers.authorization, config.secret);
 
-    Model.findOne({ _id: token.id }, (err, user) => {
+    Model.findOne({ username: token.username }, (err, user) => {
         if (err) {
             return next(err);
         }

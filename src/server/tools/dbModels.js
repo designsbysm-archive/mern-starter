@@ -1,3 +1,4 @@
+const AuditLogin = require('../models/AuditLogin');
 const User = require('../models/User');
 const Vehicle = require('../models/Vehicle');
 
@@ -6,6 +7,10 @@ module.exports = {
         let model = null;
 
         switch (kind) {
+            case 'auditlogin':
+                model = AuditLogin;
+                break;
+
             case 'users':
                 model = User;
                 break;

@@ -4,7 +4,7 @@ module.exports = (err, req, res, next) => {
     let code = 500;
     const result = {
         status: 'error',
-        message: 'unknown error', // tsline:disable-line
+        message: 'unknown error', // tslint:disable-line
     };
 
     if (err instanceof Error) {

@@ -15,8 +15,6 @@ router.post('/login', (req, res, next) => {
                 username: data.user.username,
             });
             action.save();
-        } else {
-            return next('error logging in');
         }
 
         res.json({
@@ -36,12 +34,11 @@ router.post('/logout', (req, res, next) => {
             });
             action.save();
 
+            // invalidate the current token
             const Model = dbModels.getModel('users');
             Model.findOneAndUpdate({ username: token.username }, {}).catch(updateError => {
                 next(updateError);
             });
-        } else {
-            return next('error logging out');
         }
 
         res.sendStatus(200);

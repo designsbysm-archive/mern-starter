@@ -6,6 +6,7 @@ const router = require('express').Router({ mergeParams: true });
 router.use(bodyParser.json());
 
 // api endpoints
+router.use('/saml', require('./saml'));
 router.use('/sessions', require('./sessions'));
 router.use('/users', passport.authenticate('jwt', { session: false }), require('./users'));
 router.use('/:kind', passport.authenticate('jwt', { session: false }), require('./crud'));

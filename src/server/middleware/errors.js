@@ -1,4 +1,6 @@
+const auditLog = require('../tools/auditLog');
 const log = require('fancy-log');
+const moment = require('moment');
 
 module.exports = (err, req, res, next) => {
     let code = 500;
@@ -7,6 +9,7 @@ module.exports = (err, req, res, next) => {
         message: 'unknown error', // tslint:disable-line
     };
 
+    // format the error data
     if (err instanceof Error) {
         if (err.name === 'StatusCodeError') {
             code = err.statusCode;
@@ -63,7 +66,23 @@ module.exports = (err, req, res, next) => {
     } else if (err.code) {
         result.message = err.code;
 
+    } else if (typeof(err) === 'string') {
+        result.message = err;
+
     }
+
+    // log the error message
+    auditLog.log('error', {
+        code: code,
+        message: result.message,
+        status: result.status,
+        timestamp: moment().toISOString(),
+    }, [
+        'timestamp',
+        'code',
+        'status',
+        'message',
+    ]);
 
     res.status(code).json(result);
 };

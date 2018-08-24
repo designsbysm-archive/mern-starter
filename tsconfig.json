@@ -2,8 +2,8 @@
     "compilerOptions": {
         "allowJs": true,
         "lib": [
-            "DOM",
-            "ES6"
+            "dom",
+            "es6"
         ],
         "module": "commonjs",
         "moduleResolution": "node",

@@ -3,5 +3,6 @@
 .idea/workspace.xml
 
 #Project
+audit
 dist
 .env

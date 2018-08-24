@@ -4,5 +4,6 @@
 
 #Project
 audit
+config
 dist
 .env

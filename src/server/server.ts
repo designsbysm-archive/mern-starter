@@ -1,3 +1,4 @@
+import cookieParser = require('cookie-parser');
 import express = require('express');
 import log = require('fancy-log');
 import morgan = require('morgan');
@@ -10,6 +11,8 @@ import { requestLogger } from './tools/requestLogger';
 // setup express
 const app = express();
 
+// middleware
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(morgan(requestLogger));
 app.use(routes);

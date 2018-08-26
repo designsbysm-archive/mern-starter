@@ -4,20 +4,18 @@ const dbModels = require('../tools/dbModels');
 const dotenv = require('dotenv');
 const LocalStrategy = require('passport-local').Strategy;
 const Model = dbModels.getModel('users');
+const OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 const passportJWT = require('passport-jwt');
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
-const SAMLStrategy = require('passport-saml').Strategy;
 
 // load .env variables
 dotenv.config();
-const samlCert = path.resolve(process.env.SAML_CERT);
 
 passport.use(new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
         secretOrKey: config.secret,
-    },
-    (jwtPayload, done) => {
+    }, (jwtPayload, done) => {
         // find the user, make sure they haven't been updated
         Model.findOne({ username: jwtPayload.username, updatedAt: jwtPayload.updated }).then(user => {
             return done(null, user);
@@ -57,22 +55,35 @@ passport.use(new LocalStrategy(
     },
 ));
 
-passport.use(new SAMLStrategy({
-        authnContext: process.env.SAML_AUTH_CONTEXT,
-        callbackUrl: process.env.SAML_LOGIN_RESPONSE,
-        cert: samlCert,
-        entryPoint: process.env.SAML_URL,
-        identifierFormat: null,
-        issuer: process.env.SAML_LOGIN_RESPONSE,
-    },
-    (profile, done) => {
-        console.log(profile);
-
-        // findByEmail(profile.email, function(err, user) {
-        //     if (err) {
-        //         return done(err);
-        //     }
-        return done(null, 'user');
+passport.use(new OIDCStrategy({
+        clientID: process.env.SAML_APPLICATION_ID,
+        cookieEncryptionKeys: JSON.parse(process.env.SAML_COOKIE_KEYS),
+        identityMetadata: `https://login.microsoftonline.com/${process.env.SAML_TENANT_ID}/v2.0/.well-known/openid-configuration`,
+        passReqToCallback: false,
+        redirectUrl: process.env.SAML_REDIRECT_URL,
+        responseMode: 'form_post',
+        responseType: 'id_token',
+        useCookieInsteadOfSession: true,
+    }, (profile, done) => {
+        console.log(iss, sub, profile, accessToken, refreshToken);
+        // if (!profile.email) {
+        //     return done(new Error("No email found"), null);
+        // }
+        // // asynchronous verification, for effect...
+        // process.nextTick(function () {
+        //     findByEmail(profile.email, function (err, user) {
+        //         if (err) {
+        //             return done(err);
+        //         }
+        //         if (!user) {
+        //             // "Auto-registration"
+        //             users.push(profile);
+        //             return done(null, profile);
+        //         }
+        return done(null, {
+            user: 'test',
+        });
+        //     });
         // });
-    }),
-);
+    },
+));

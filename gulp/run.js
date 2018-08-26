@@ -1,3 +1,5 @@
+const { series } = require('gulp');
+const browserSync = require('browser-sync');
 const dotenv = require('dotenv');
 const nodemon = require('gulp-nodemon');
 const { paths } = require('./tools/paths');
@@ -5,6 +7,25 @@ const yargs = require('yargs');
 
 // load .env variables
 dotenv.config();
+
+function webServer(callback) {
+    const options = {
+        files: [`${paths.dist.root}/**/*`],
+        notify: false,
+        port: process.env.CLIENT_PORT,
+        proxy: `http://localhost:${process.env.SERVER_PORT}/`,
+        reloadDelay: 2000,
+    };
+
+    if (yargs.argv.page) {
+        options.startPath = yargs.argv.page;
+    }
+
+    setTimeout(() => {
+        browserSync(options);
+        callback();
+    }, 1000);
+}
 
 function nodeServer(callback) {
     let called = false;
@@ -29,4 +50,4 @@ function nodeServer(callback) {
     });
 }
 
-exports.node = nodeServer;
+exports.web = series(nodeServer, webServer);

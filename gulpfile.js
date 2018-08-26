@@ -9,16 +9,21 @@ exports.clean = series(
 exports.build = series(
     this.clean,
     parallel(
+        tasks.client.build,
+        tasks.css.build,
         tasks.html.compress,
         tasks.server.build,
+        tasks.vendor.build,
     ),
 );
 
 exports.default = series(
     this.build,
     parallel(
+        tasks.client.watch,
+        tasks.css.watch,
         tasks.html.watch,
         tasks.server.watch,
     ),
-    tasks.run.node,
+    tasks.run.web,
 );

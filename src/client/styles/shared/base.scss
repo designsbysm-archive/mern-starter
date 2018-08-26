@@ -1,0 +1,149 @@
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    padding-top: 50px;
+}
+
+h2,
+h3 {
+    @include font-size(1.15);
+    font-weight: 600;
+    margin-top: 0;
+}
+
+h4 {
+    font-weight: 400;
+    margin: 0;
+}
+
+.btn.disabled,
+.btn[disabled],
+fieldset[disabled] .btn,
+.form-control[disabled] {
+    cursor: pointer;
+}
+
+.red {
+    color: $color--branding-primary;
+}
+
+.row {
+    margin-bottom: 60px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    .row {
+        margin-bottom: 0;
+    }
+}
+
+.admin {
+    display: none;
+
+    .logged-in & {
+        display: block;
+    }
+}
+
+.debug {
+    display: none;
+
+    .env-development & {
+        display: block;
+    }
+}
+
+.content {
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.buttons {
+    .btn {
+        float: left;
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+
+    .btn-group {
+        float: left;
+        margin-right: 10px;
+
+        .btn {
+            margin-right: 0;
+            outline: none;
+        }
+
+        .dropdown-menu {
+            top: calc(100% - 10px);
+
+            li {
+                a {
+                    padding-bottom: 5px;
+                    padding-top: 5px;
+                }
+
+                &[disabled] {
+                    box-shadow: none;
+                    cursor: pointer;
+                    opacity: .35;
+                }
+            }
+        }
+    }
+
+    .btn-group.dropup {
+        .dropdown-menu {
+            top: auto;
+        }
+    }
+}
+
+form {
+    .required {
+        color: $color--branding-primary;
+        font-size: 11px;
+        font-weight: 400;
+        margin-left: 11px;
+        text-transform: uppercase;
+    }
+
+    .radio-inline {
+        margin-right: 30px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        label {
+            font-weight: 400;
+        }
+    }
+}
+
+.calendars {
+    .wrap {
+        float: left;
+        margin-right: 60px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        .time {
+            margin-top: 30px;
+            width: 100% !important;
+        }
+    }
+
+    .buttons {
+        clear: both;
+        padding-top: 30px;
+    }
+}

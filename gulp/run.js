@@ -24,7 +24,7 @@ function webServer(callback) {
     setTimeout(() => {
         browserSync(options);
         callback();
-    }, 1000);
+    }, 3000);
 }
 
 function nodeServer(callback) {

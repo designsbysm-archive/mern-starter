@@ -58,32 +58,19 @@ passport.use(new LocalStrategy(
 passport.use(new OIDCStrategy({
         clientID: process.env.SAML_APPLICATION_ID,
         cookieEncryptionKeys: JSON.parse(process.env.SAML_COOKIE_KEYS),
-        identityMetadata: `https://login.microsoftonline.com/${process.env.SAML_TENANT_ID}/v2.0/.well-known/openid-configuration`,
-        passReqToCallback: false,
+        identityMetadata: `https://login.microsoftonline.com/${process.env.SAML_TENANT_ID}/v2.0/.well-known/openid-configuration/`,
+        loggingLevel: 'info', // TODO: remove after testing
+        loggingNoPII: false, // TODO: remove after testing
         redirectUrl: process.env.SAML_REDIRECT_URL,
         responseMode: 'form_post',
         responseType: 'id_token',
+        scope: ['profile'],
         useCookieInsteadOfSession: true,
-    }, (profile, done) => {
-        console.log(iss, sub, profile, accessToken, refreshToken);
-        // if (!profile.email) {
-        //     return done(new Error("No email found"), null);
-        // }
-        // // asynchronous verification, for effect...
-        // process.nextTick(function () {
-        //     findByEmail(profile.email, function (err, user) {
-        //         if (err) {
-        //             return done(err);
-        //         }
-        //         if (!user) {
-        //             // "Auto-registration"
-        //             users.push(profile);
-        //             return done(null, profile);
-        //         }
+    }, (req, params, done) => {
+        console.log(req, params);
+
         return done(null, {
             user: 'test',
         });
-        //     });
-        // });
     },
 ));

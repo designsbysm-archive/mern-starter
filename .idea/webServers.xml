@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="18596bcf-c485-4815-b99c-403f54310166" name="designsbysm.me" url="http://designsbysm.me">
+        <fileTransfer host="designsbysm.me" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/var/www/me.designsbysm.mock" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="8e64e356-243e-45eb-9919-e3847d066e7c" name="genrx2u.com" url="http://apps-prod">
+        <fileTransfer host="apps-prod" port="22" privateKey="$USER_HOME$/.ssh/id_rsa" rootFolder="/var/www/mock" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -13,6 +13,7 @@ const app = express();
 
 // middleware
 app.use(cookieParser());
+
 app.use(passport.initialize());
 app.use(morgan(requestLogger));
 app.use(routes);

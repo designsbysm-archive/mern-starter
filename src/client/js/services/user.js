@@ -1,5 +1,5 @@
 angular.module('MockServer')
-    .service('userService', ($rootScope, $http, $localStorage) => {
+    .service('userService', ($rootScope, $http, $location, $localStorage) => {
         const Service = function () {
             // start service object
         };
@@ -8,6 +8,10 @@ angular.module('MockServer')
 
         /** public methods */
         Service.prototype.getUser = function () {
+            if (!this.isLoggedIn()) {
+                return Promise.resolve({});
+            }
+
             return $http.get('/api/v1/users').then(res => {
                 return res;
             }).catch(() => {
@@ -66,23 +70,6 @@ angular.module('MockServer')
                 $http.defaults.headers.common.authorization = '';
 
                 return false;
-            });
-        };
-
-        Service.prototype.saml = function () {
-            return $http.get('/api/v1/saml/login').then(res => {
-                consle.log(res);
-                // const expireDate = new Date();
-                // expireDate.setDate(expireDate.getDate() + 7);
-                //
-                // $rootScope.$storage['auth-token'] = res.data.token;
-                // this.setAuthHeader(res.data.token);
-                //
-                // return this.getUser().then(getRes => {
-                //     $rootScope.$storage['auth-role'] = getRes.data.role;
-                //
-                //     return getRes;
-                // });
             });
         };
 

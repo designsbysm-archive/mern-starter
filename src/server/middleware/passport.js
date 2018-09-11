@@ -4,7 +4,6 @@ const dbModels = require('../tools/dbModels');
 const dotenv = require('dotenv');
 const LocalStrategy = require('passport-local').Strategy;
 const Model = dbModels.getModel('users');
-// const OIDCStrategy = require('passport-azure-ad').OIDCStrategy;
 const passportJWT = require('passport-jwt');
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
@@ -67,26 +66,6 @@ passport.use(new LocalStrategy(
 
     },
 ));
-
-// passport.use(new OIDCStrategy({
-//         clientID: process.env.SAML_APPLICATION_ID,
-//         cookieEncryptionKeys: JSON.parse(process.env.SAML_COOKIE_KEYS),
-//         identityMetadata: `https://login.microsoftonline.com/${process.env.SAML_TENANT_ID}/v2.0/.well-known/openid-configuration/`,
-//         loggingLevel: 'info', // TODO: remove after testing
-//         loggingNoPII: false, // TODO: remove after testing
-//         redirectUrl: process.env.SAML_REDIRECT_URL,
-//         responseMode: 'form_post',
-//         responseType: 'id_token',
-//         scope: ['profile'],
-//         useCookieInsteadOfSession: true,
-//     }, (req, params, done) => {
-//         console.log(req, params);
-//
-//         return done(null, {
-//             user: 'test',
-//         });
-//     },
-// ));
 
 passport.serializeUser((user, done) => {
     done(null, user);

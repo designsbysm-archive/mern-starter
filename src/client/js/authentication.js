@@ -1,16 +1,17 @@
 angular.module('MockServer')
     .run(($rootScope, $location, userService) => {
         $rootScope.$on('$routeChangeStart', (event, next) => {
-            // redirect to login page
-            if (!userService.isLoggedIn()) {
-                $location.path('/login');
+
+            // if the token has been passed (saml)
+            const search = $location.search();
+            if (!userService.isLoggedIn() && search.token) {
+                userService.storeSession(search.token, search.user, search.role);
+                $location.search('');
             }
 
-            // if only search redirect
-            userService.getUser().then(res => {
-                if (!res) {
-                    return;
-                }
-            });
+            // redirect to login page
+            if (!userService.isLoggedIn() || (!userService.isLoggedIn() && !search.token)) {
+                $location.path('/login');
+            }
         });
     });

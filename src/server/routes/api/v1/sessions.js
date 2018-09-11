@@ -15,6 +15,13 @@ router.post('/login', (req, res, next) => {
         if (err) {
             return next(err);
         } else if (!data.token) {
+            auditLog.log('authentication', {
+                action: 'invalid',
+                method: 'basic',
+                timestamp: moment().toISOString(),
+                username: 'unknown',
+            }, logHeader);
+
             return res.sendStatus(401);
         } else if (data.user.username) {
             auditLog.log('authentication', {
@@ -26,7 +33,9 @@ router.post('/login', (req, res, next) => {
         }
 
         res.json({
+            role: data.user.role,
             token: data.token,
+            user: data.user.username,
         });
     })(req, res, next);
 });
@@ -53,5 +62,34 @@ router.post('/logout', (req, res, next) => {
         res.sendStatus(200);
     })(req, res, next);
 });
+
+router.get('/saml', passport.authenticate('saml'));
+
+router.post('/saml/response', (req, res, next) => {
+        passport.authenticate('saml', (err, data) => {
+            if (err) {
+                return next(err);
+            } else if (!data.token) {
+                auditLog.log('authentication', {
+                    action: 'invalid',
+                    method: 'saml',
+                    timestamp: moment().toISOString(),
+                    username: 'unknown',
+                }, logHeader);
+
+                return res.sendStatus(401);
+            } else if (data.user.username) {
+                auditLog.log('authentication', {
+                    action: 'login',
+                    method: 'saml',
+                    timestamp: moment().toISOString(),
+                    username: data.user.username,
+                }, logHeader);
+            }
+
+            res.redirect(`/?token=${data.token}&user=${data.user.username}&role=${data.user.role}`);
+        })(req, res, next);
+    },
+);
 
 module.exports = router;

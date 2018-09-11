@@ -1,5 +1,6 @@
 import cookieParser = require('cookie-parser');
 import express = require('express');
+import session = require('express-session');
 import log = require('fancy-log');
 import morgan = require('morgan');
 import passport = require('passport');
@@ -13,8 +14,14 @@ const app = express();
 
 // middleware
 app.use(cookieParser());
-
+app.use(session(
+    {
+        resave: true,
+        saveUninitialized: true,
+        secret: 'w6CTRaia*bTI7CAisHJTX8yRzEkXtMJvd9Veza@ErqVQTGwi4OJpYYfatyWCwU}a',
+    }));
 app.use(passport.initialize());
+app.use(passport.session());
 app.use(morgan(requestLogger));
 app.use(routes);
 app.use(errors);

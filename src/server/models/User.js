@@ -4,12 +4,19 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const timestamps = require('mongoose-timestamp');
 const schema = mongoose.Schema({
+    active: {
+        default: true,
+        type: Boolean,
+    },
     password: {
-        required: true,
         select: false,
         type: String,
     },
     role: {
+        required: true,
+        type: String,
+    },
+    type: {
         required: true,
         type: String,
     },
@@ -29,7 +36,7 @@ schema.methods.generateToken = function (secret) {
         role: this.role,
         updated: this.updatedAt,
         username: this.username,
-    }, secret, { expiresIn: '1d' });
+    }, secret, { expiresIn: '12h' });
 };
 
 schema.methods.generatePasswordHash = function (password) {

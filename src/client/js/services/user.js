@@ -8,14 +8,9 @@ angular.module('MockServer')
 
         /** public methods */
         Service.prototype.getUser = function () {
-            if (!this.isLoggedIn()) {
-                return Promise.resolve({});
-            }
-
-            return $http.get('/api/v1/users').then(res => {
-                return res;
-            }).catch(() => {
-                this.logout();
+            return Promise.resolve({
+                name: $rootScope.$storage['auth-user'],
+                role: $rootScope.$storage['auth-role'],
             });
         };
 
@@ -48,17 +43,9 @@ angular.module('MockServer')
                 password: password,
                 username: username,
             }).then(res => {
-                const expireDate = new Date();
-                expireDate.setDate(expireDate.getDate() + 7);
+                this.storeSession(res.data.token, res.data.user, res.data.role);
 
-                $rootScope.$storage['auth-token'] = res.data.token;
-                this.setAuthHeader(res.data.token);
-
-                return this.getUser().then(getRes => {
-                    $rootScope.$storage['auth-role'] = getRes.data.role;
-
-                    return getRes;
-                });
+                return this.getUser();
             });
         };
 
@@ -66,6 +53,7 @@ angular.module('MockServer')
             return $http.post('/api/v1/sessions/logout', {}).then(() => {
                 delete $rootScope.$storage['auth-role'];
                 delete $rootScope.$storage['auth-token'];
+                delete $rootScope.$storage['auth-user'];
 
                 $http.defaults.headers.common.authorization = '';
 
@@ -75,6 +63,19 @@ angular.module('MockServer')
 
         Service.prototype.setAuthHeader = function (token) {
             $http.defaults.headers.common.authorization = `Bearer ${token}`;
+        };
+
+        Service.prototype.storeSession = function (token, user, role) {
+            $rootScope.$storage['auth-role'] = role;
+            $rootScope.$storage['auth-token'] = token;
+            $rootScope.$storage['auth-user'] = user;
+            this.setAuthHeader(token);
+
+            this.getUser().then(res => {
+                $rootScope.$broadcast('login', res);
+            }).catch(err => {
+                console.error(err); // ts-lint: disable-line
+            });
         };
 
         return new Service;

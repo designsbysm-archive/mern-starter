@@ -6,14 +6,7 @@ angular.module('MockServer')
         if (token) {
             userService.setAuthHeader(token);
             userService.getUser().then(res => {
-                if (!res) {
-                    userService.logout();
-                    $location.path('/login');
-
-                    return;
-                }
-
-                $scope.currentUser = res.data;
+                $scope.currentUser = res;
             });
         }
 

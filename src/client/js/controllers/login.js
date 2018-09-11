@@ -1,31 +1,21 @@
 angular.module('MockServer')
-    .controller('LoginController', ($scope, $location, userService) => {
+    .controller('LoginController', ($scope, $location, $window, userService) => {
         $scope.disableLogin = (username, password) => {
             return !username || !password;
         };
 
         $scope.login = (username, password) => {
-            return userService.login(username, password).then(res => {
-                $scope.$emit('login', res.data);
-
-                userService.getUser().then(getRes => {
-                    if (getRes.data.role === 'tech') {
-                        $location.path('/search');
-                    } else {
-                        $location.path('/');
-                    }
-
-                    return getRes;
-                });
+            return userService.login(username, password).then(() => {
+                $location.path('/');
 
             }).catch(err => {
-                console.error(err);
+                console.error(err); // ts-lint: disable-line
 
                 return err;
             });
         };
 
-        $scope.sso = () => {
-            window.location.href = '/api/v1/saml/login';
+        $scope.saml = () => {
+            $window.location.href = '/api/v1/sessions/saml';
         };
     });

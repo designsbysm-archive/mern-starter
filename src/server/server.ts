@@ -1,4 +1,5 @@
 import cookieParser = require('cookie-parser');
+import dotenv = require('dotenv');
 import express = require('express');
 import session = require('express-session');
 import log = require('fancy-log');
@@ -9,6 +10,9 @@ import errors = require('./middleware/errors');
 import routes = require('./routes');
 import { requestLogger } from './tools/requestLogger';
 
+// load .env variables
+dotenv.config();
+
 // setup express
 const app = express();
 
@@ -18,7 +22,7 @@ app.use(session(
     {
         resave: true,
         saveUninitialized: true,
-        secret: 'w6CTRaia*bTI7CAisHJTX8yRzEkXtMJvd9Veza@ErqVQTGwi4OJpYYfatyWCwU}a',
+        secret: process.env.SESSION_SECRET,
     }));
 app.use(passport.initialize());
 app.use(passport.session());

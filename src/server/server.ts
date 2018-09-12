@@ -1,4 +1,3 @@
-import cookieParser = require('cookie-parser');
 import dotenv = require('dotenv');
 import express = require('express');
 import session = require('express-session');
@@ -8,16 +7,14 @@ import passport = require('passport');
 import config = require('./config');
 import errors = require('./middleware/errors');
 import routes = require('./routes');
+import { apiLogger } from './tools/apiLogger';
 import { requestLogger } from './tools/requestLogger';
 
 // load .env variables
 dotenv.config();
 
-// setup express
+// setup express middleware
 const app = express();
-
-// middleware
-app.use(cookieParser());
 app.use(session(
     {
         resave: true,
@@ -27,6 +24,7 @@ app.use(session(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(morgan(requestLogger));
+app.use(morgan(apiLogger));
 app.use(routes);
 app.use(errors);
 

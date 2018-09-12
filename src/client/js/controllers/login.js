@@ -9,7 +9,7 @@ angular.module('MockServer')
                 $location.path('/');
 
             }).catch(err => {
-                console.error(err); // ts-lint: disable-line
+                console.error(err); // tslint:disable-line
 
                 return err;
             });

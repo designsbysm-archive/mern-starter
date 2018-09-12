@@ -19,7 +19,7 @@ router.post('/login', (req, res, next) => {
                 action: 'invalid',
                 method: 'basic',
                 timestamp: moment().toISOString(),
-                username: 'unknown',
+                username: req.body.username,
             }, logHeader);
 
             return res.sendStatus(401);
@@ -47,7 +47,7 @@ router.post('/logout', (req, res, next) => {
         } else if (token.username) {
             auditLog.log('authentication', {
                 action: 'logout',
-                method: 'basic',
+                method: '',
                 timestamp: moment().toISOString(),
                 username: token.username,
             }, logHeader);
@@ -70,6 +70,7 @@ router.post('/saml/response', (req, res, next) => {
             if (err) {
                 return next(err);
             } else if (!data.token) {
+                // TODO: log as error?
                 auditLog.log('authentication', {
                     action: 'invalid',
                     method: 'saml',

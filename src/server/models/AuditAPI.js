@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const schema = mongoose.Schema({
     body: {
-        type: String,
+        type: Object,
     },
     code: {
         type: Number,

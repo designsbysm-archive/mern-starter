@@ -8,17 +8,16 @@ export function apiLogger(tokens, req, res) {
     const url = req.originalUrl;
     const username = req.user ? req.user.username : 'unknown';
 
-    // only log api calls
-    if (!url.startsWith('/api/')) {
+    // only log api calls (except sessions)
+    if (
+        !url.startsWith('/api/') ||
+        url.includes('/sessions/')
+    ) {
         return null;
     }
 
-    if (body.password) {
-        body.password = '*****';
-    }
-
     auditLog.log('api', {
-        body: JSON.stringify(body),
+        body: body,
         code: code,
         method: method,
         timestamp: moment().toISOString(),

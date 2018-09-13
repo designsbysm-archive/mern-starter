@@ -77,12 +77,7 @@ module.exports = (err, req, res, next) => {
         message: result.message,
         status: result.status,
         timestamp: moment().toISOString(),
-    }, [
-        'timestamp',
-        'code',
-        'status',
-        'message',
-    ]);
+    });
 
     res.status(code).json(result);
 };

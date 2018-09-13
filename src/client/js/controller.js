@@ -1,5 +1,9 @@
 angular.module('MockServer')
     .controller('AppController', ($scope, $location, userService) => {
+        $scope.user = userService.getUser();
+        $scope.$on('login', () => {
+            $scope.user = userService.getUser();
+        });
 
         // if the JWT cookie is found, set the auth header & current user
         const token = $scope.$storage['auth-token'];

@@ -8,31 +8,30 @@ import passport = require('passport');
 import config = require('./config');
 import errors = require('./middleware/errors');
 import routes = require('./routes');
+import { morganAPI } from './tools/morganAPI';
+import { morganDev } from './tools/morganDev';
 
 const SessionStore = MongoDBStore(session);
-import { apiLogger } from './tools/apiLogger';
-import { requestLogger } from './tools/requestLogger';
 
 // load .env variables
 dotenv.config();
 
 // setup express middleware
 const app = express();
-app.use(session(
-    {
-        resave: true,
-        saveUninitialized: true,
-        secret: process.env.SESSION_SECRET,
-        store: new SessionStore({
-            collection: 'sessions',
-            uri: process.env.MONGO_CONNECTION,
-        }),
-        unset: 'destroy',
-    }));
+app.use(session({
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    store: new SessionStore({
+        collection: 'sessions',
+        uri: process.env.MONGO_CONNECTION,
+    }),
+    unset: 'destroy',
+}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(morgan(requestLogger));
-app.use(morgan(apiLogger));
+app.use(morgan(morganAPI));
+app.use(morgan(morganDev));
 app.use(routes);
 app.use(errors);
 

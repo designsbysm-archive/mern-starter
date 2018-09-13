@@ -1,15 +1,15 @@
 const config = require('../config');
-const passport = require('passport');
 const dbModels = require('../tools/dbModels');
 const dotenv = require('dotenv');
+const fs = require('fs');
 const LocalStrategy = require('passport-local').Strategy;
 const Model = dbModels.getModel('users');
+const passport = require('passport');
 const passportJWT = require('passport-jwt');
+const path = require('path');
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 const SamlStrategy = require('passport-saml').Strategy;
-const path = require('path');
-const fs = require('fs');
 
 // load .env variables
 dotenv.config();

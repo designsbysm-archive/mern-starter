@@ -1,6 +1,8 @@
-const config = require('../config');
+import { Request, Response } from 'express';
+import { TokenIndexer } from 'morgan';
+import config = require('../config');
 
-export function requestLogger(tokens, req, res) {
+export function morganDev(tokens: TokenIndexer, req: Request, res: Response): string {
     if (config.environment !== 'debug') {
         return;
     }

@@ -6,6 +6,7 @@ angular.module('MockServer')
 
         $scope.login = (username, password) => {
             return userService.login(username, password).then(() => {
+                $scope.$emit('login');
                 $location.path('/');
 
             }).catch(err => {

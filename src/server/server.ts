@@ -10,6 +10,7 @@ import errors = require('./middleware/errors');
 import routes = require('./routes');
 import { morganAPI } from './tools/morganAPI';
 import { morganDev } from './tools/morganDev';
+import { IAddressInfo } from './types/express';
 
 const SessionStore = MongoDBStore(session);
 

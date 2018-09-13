@@ -1,15 +1,16 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { TokenIndexer } from 'morgan';
+import { IGetUserAuthInfoRequest } from '../types/express';
 import moment = require('moment'); // tslint:disable-line
 import config = require('../config');
 import auditLog = require('./auditLog');
 
-export function morganAPI(tokens: TokenIndexer, req: Request, res: Response): any {
+export function morganAPI(tokens: TokenIndexer, req: IGetUserAuthInfoRequest, res: Response): any {
     const body = req.body;
     const code = res.statusCode;
     const method = req.method;
     const url = req.originalUrl;
-    const username = req.user ? req.user.username : 'unknown';
+    const username = req.user ? req.user.username : 'unknown'; // tslint:disable-line
 
     // only log api calls (except sessions)
     if (

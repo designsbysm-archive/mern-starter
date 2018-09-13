@@ -67,14 +67,6 @@ passport.use(new LocalStrategy(
     },
 ));
 
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-    done(null, user);
-});
-
 passport.use(new SamlStrategy(
     {
         callbackUrl: process.env.SAML_REDIRECT_URL,
@@ -129,3 +121,11 @@ passport.use(new SamlStrategy(
             });
     }),
 );
+
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+    done(null, user);
+});

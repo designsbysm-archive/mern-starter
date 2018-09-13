@@ -1,3 +1,4 @@
+import MongoDBStore = require('connect-mongodb-session');
 import dotenv = require('dotenv');
 import express = require('express');
 import session = require('express-session');
@@ -7,6 +8,8 @@ import passport = require('passport');
 import config = require('./config');
 import errors = require('./middleware/errors');
 import routes = require('./routes');
+
+const SessionStore = MongoDBStore(session);
 import { apiLogger } from './tools/apiLogger';
 import { requestLogger } from './tools/requestLogger';
 
@@ -20,6 +23,11 @@ app.use(session(
         resave: true,
         saveUninitialized: true,
         secret: process.env.SESSION_SECRET,
+        store: new SessionStore({
+            collection: 'sessions',
+            uri: process.env.MONGO_CONNECTION,
+        }),
+        unset: 'destroy',
     }));
 app.use(passport.initialize());
 app.use(passport.session());

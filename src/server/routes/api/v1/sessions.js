@@ -59,14 +59,18 @@ router.post('/logout', (req, res, next) => {
             });
         }
 
-        res.sendStatus(200);
+        // remove session
+        req.session.destroy(() => {
+            res.sendStatus(200);
+        });
+
     })(req, res, next);
 });
 
-router.get('/saml', passport.authenticate('saml'));
+router.get('/saml', passport.authenticate('saml', { session: false }));
 
 router.post('/saml/response', (req, res, next) => {
-        passport.authenticate('saml', (err, data) => {
+        passport.authenticate('saml', { session: false }, (err, data) => {
             if (err) {
                 return next(err);
             } else if (!data.token) {

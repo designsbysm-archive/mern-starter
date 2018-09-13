@@ -33,7 +33,6 @@ schema.methods.decodeToken = function (header, secret) {
 
 schema.methods.generateToken = function (secret) {
     return jwt.sign({
-        role: this.role,
         updated: this.updatedAt,
         username: this.username,
     }, secret, { expiresIn: '12h' });

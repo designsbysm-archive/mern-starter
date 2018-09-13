@@ -1,5 +1,7 @@
 angular.module('MockServer')
-    .controller('HomeController', ($scope, $http) => {
+    .controller('HomeController', ($scope, $http, userService) => {
+        $scope.user = userService.getUser();
+
         $scope.getError = () => {
             return $http.get('/api/v1/people').then(res => {
                 console.log(res); // tslint:disable-line

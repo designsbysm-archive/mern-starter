@@ -5,9 +5,6 @@ angular.module('MockServer')
         const token = $scope.$storage['auth-token'];
         if (token) {
             userService.setAuthHeader(token);
-            userService.getUser().then(res => {
-                $scope.currentUser = res;
-            });
         }
 
         $scope.isLoggedIn = () => {
@@ -26,8 +23,4 @@ angular.module('MockServer')
             userService.logout();
             $location.path('/login');
         };
-
-        $scope.$on('login', (_, user) => {
-            $scope.currentUser = user;
-        });
     });

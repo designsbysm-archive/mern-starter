@@ -8,10 +8,10 @@ angular.module('MockServer')
 
         /** public methods */
         Service.prototype.getUser = function () {
-            return Promise.resolve({
+            return {
                 name: $rootScope.$storage['auth-user'],
                 role: $rootScope.$storage['auth-role'],
-            });
+            };
         };
 
         Service.prototype.isLoggedIn = function () {
@@ -70,12 +70,6 @@ angular.module('MockServer')
             $rootScope.$storage['auth-token'] = token;
             $rootScope.$storage['auth-user'] = user;
             this.setAuthHeader(token);
-
-            this.getUser().then(res => {
-                $rootScope.$broadcast('login', res);
-            }).catch(err => {
-                console.error(err); // tslint:disable-line
-            });
         };
 
         return new Service;

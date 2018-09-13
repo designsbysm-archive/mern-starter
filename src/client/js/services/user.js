@@ -70,6 +70,8 @@ angular.module('MockServer')
             $rootScope.$storage['auth-token'] = token;
             $rootScope.$storage['auth-user'] = user;
             this.setAuthHeader(token);
+
+            $rootScope.$broadcast('login');
         };
 
         return new Service;

@@ -54,10 +54,13 @@ router.post('/logout', (req, res, next) => {
         }
 
         // remove session
-        req.session.destroy(() => {
+        if (req.session) {
+            req.session.destroy(() => {
+                res.sendStatus(200);
+            });
+        } else {
             res.sendStatus(200);
-        });
-
+        }
     })(req, res, next);
 });
 

@@ -15,8 +15,10 @@ export function morganAPI(tokens: TokenIndexer, req: IGetUserAuthInfoRequest, re
     // only log api calls (except sessions)
     if (
         !url.startsWith('/api/') ||
-        (config.environment !== 'debug' && url.includes('/sessions/'))
-    ) {
+        (config.environment !== 'debug' && (
+            url.includes('/sessions/') ||
+            url.includes('/stats/')
+        ))) {
         return null;
     }
 
@@ -25,7 +27,7 @@ export function morganAPI(tokens: TokenIndexer, req: IGetUserAuthInfoRequest, re
     }
 
     auditLog.log('api', {
-        'body': body,
+        'body': JSON.stringify(body),
         'code': code,
         'method': method,
         'timestamp': moment().toISOString(),

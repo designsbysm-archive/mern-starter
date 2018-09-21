@@ -9,6 +9,7 @@ angular.module('MockServer')
                 $location.path('/');
 
             }).catch(err => {
+                // notificationService.create('warning', null, 'Unable to login, please try again.');
                 console.error(err); // tslint:disable-line
 
                 return err;

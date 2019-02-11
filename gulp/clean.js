@@ -1,8 +1,8 @@
-const del = require('del');
-const { paths } = require('./tools/paths');
+const del = require("del");
+const { paths } = require("./tools/paths");
 
 function cleanBuild() {
-    return del([`${paths.dist.root}/**/*`]);
+  return del([ `${paths.dist.root}/**/*` ]);
 }
 
 exports.build = cleanBuild;

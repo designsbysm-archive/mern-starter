@@ -1,10 +1,10 @@
 @mixin align-vertical {
-    align-items: center;
-    display: flex;
+  align-items: center;
+  display: flex;
 }
 
 //rem output with px fallback
 @mixin font-size($size_value: 1) {
-    font-size: ($size_value * 16) * 1px;
-    font-size: $size_value * 1rem;
+  font-size: ($size_value * 16) * 1px;
+  font-size: $size_value * 1rem;
 }

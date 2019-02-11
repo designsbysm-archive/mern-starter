@@ -1,6 +1,6 @@
 const { series, parallel } = require("gulp");
 const bulk = require("bulk-require");
-const tasks = bulk(__dirname, ["./gulp/**/*.js"]).gulp;
+const tasks = bulk(__dirname, [ "./gulp/**/*.js" ]).gulp;
 
 exports.clean = series(tasks.clean.build);
 

@@ -1,4 +1,4 @@
-angular.module('MockServer', [
-    'ngRoute',
-    'ngStorage',
+angular.module("MockServer", [
+  "ngRoute",
+  "ngStorage", 
 ]);

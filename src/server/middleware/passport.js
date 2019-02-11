@@ -1,131 +1,235 @@
-const config = require('../config');
-const dbModels = require('../tools/dbModels');
-const dotenv = require('dotenv');
-const fs = require('fs');
-const LocalStrategy = require('passport-local').Strategy;
-const Model = dbModels.getModel('users');
-const passport = require('passport');
-const passportJWT = require('passport-jwt');
-const path = require('path');
+const config = require("../config");
+const dotenv = require("dotenv");
+const fs = require("fs");
+const LocalStrategy = require("passport-local").Strategy;
+const Model = require("../models/User");
+const passport = require("passport");
+const passportJWT = require("passport-jwt");
+const path = require("path");
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
-const SamlStrategy = require('passport-saml').Strategy;
+const SamlStrategy = require("passport-saml").Strategy;
 
 // load .env variables
 dotenv.config();
 const certFile = path.resolve(process.env.SAML_CERT);
 
-passport.use(new JWTStrategy({
-        jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-        secretOrKey: config.secret,
-    }, (jwtPayload, done) => {
-        // find the user, make sure they haven't been updated
-        Model.findOne({
-            active: true,
-            updatedAt: jwtPayload.updated,
-            username: jwtPayload.username,
-        }).then(user => {
-            return done(null, user);
-        }).catch(err => {
-            return done(err);
+passport.use(
+  new JWTStrategy(
+    {
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      secretOrKey: config.secret,
+    },
+    (jwtPayload, done) => {
+      // find the user, make sure they haven't been updated
+      return Model.findOne({
+        _id: jwtPayload.id,
+        active: true,
+        updatedAt: jwtPayload.updated,
+      })
+        .then(user => {
+          return done(null, user);
+        })
+        .catch(err => {
+          return done(err);
         });
     },
-));
+  ),
+);
 
-passport.use(new LocalStrategy(
-    (username, password, done) => {
-        Model.findOne({
-            type: 'basic',
-            username: username,
-        })
-            .collation({ locale: 'en', strength: 2 })
-            .select('active')
-            .select('password')
-            .select('role')
-            .select('type')
-            .select('updatedAt')
-            .select('username')
-            .exec((err, user) => {
-                if (err) {
-                    return done(err);
-                }
+passport.use(
+  new LocalStrategy((username, password, done) => {
+    Model.findOne({
+      type: "basic",
+      username: username,
+    })
+      .collation({
+        locale: "en",
+        strength: 2,
+      })
+      .select("active")
+      .select("name")
+      .select("password")
+      .select("role")
+      .select("type")
+      .select("updatedAt")
+      .select("username")
+      .exec((err, user) => {
+        if (err) {
+          return done(err);
+        }
 
-                if (!user || !password || !user.active) {
-                    return done(null, false, { message: 'unauthorized' });
-                }
+        if (!user || !password || !user.active) {
+          return done(null, false, {
+            message: "unauthorized",
+          });
+        }
 
-                if (user.validatePasswordHash(password)) {
-                    return done(null, {
-                        token: user.generateToken(config.secret),
-                        user: user,
-                    });
-                } else {
-                    return done(null, false, { message: 'unauthorized' });
-                }
+        if (user.validatePasswordHash(password)) {
+          // if local dev don't update user
+          if ([
+            "debug",
+            "development", 
+          ].includes(config.environment)) {
+            const result = new Model(user);
+            const tokenData = result.generateToken(config.secret);
+
+            return done(null, {
+              expires: tokenData.expires,
+              token: tokenData.token,
+              user: result,
             });
+          }
 
-    },
-));
+          Model.findOneAndUpdate(
+            {
+              username: user.username,
+            },
+            {
+              $set: {
+                lastLogin: new Date(),
+              },
+            },
+            {
+              new: true,
+            },
+          )
+            .then(doc => {
+              const result = new Model(doc);
+              const tokenData = result.generateToken(config.secret);
 
-passport.use(new SamlStrategy(
+              return done(null, {
+                expires: tokenData.expires,
+                token: tokenData.token,
+                user: result,
+              });
+            })
+            .catch(updateError => {
+              return done(null, false, updateError);
+            });
+        } else {
+          return done(null, false, {
+            message: "unauthorized",
+          });
+        }
+      });
+  }),
+);
+
+passport.use(
+  new SamlStrategy(
     {
-        callbackUrl: process.env.SAML_REDIRECT_URL,
-        cert: fs.readFileSync(certFile, 'utf-8'),
-        entryPoint: `https://login.microsoftonline.com/${process.env.SAML_TENANT_ID}/saml2`,
-        issuer: process.env.SAML_APPLICATION_ID,
-        signatureAlgorithm: 'sha256',
+      callbackUrl: process.env.SAML_REDIRECT_URL,
+      cert: fs.readFileSync(certFile, "utf-8"),
+      entryPoint: `https://login.microsoftonline.com/${process.env.SAML_TENANT_ID}/saml2`,
+      issuer: process.env.SAML_APPLICATION_ID,
+      signatureAlgorithm: "sha256",
     },
     (profile, done) => {
-        Model.findOne({
-            type: 'saml',
-            username: profile.nameID,
+      Model.findOne({
+        type: "saml",
+        username: profile.nameID,
+      })
+        .collation({
+          locale: "en",
+          strength: 2,
         })
-            .collation({ locale: 'en', strength: 2 })
-            .select('active')
-            .select('role')
-            .select('type')
-            .select('updatedAt')
-            .select('username')
-            .exec((err, user) => {
-                if (err) {
-                    return done(err);
-                }
+        .select("active")
+        .select("name")
+        .select("role")
+        .select("type")
+        .select("updatedAt")
+        .select("username")
+        .exec((err, user) => {
+          if (err) {
+            return done(err);
+          }
 
-                if (!user) {
-                    const newUser = new Model({
-                        role: 'tech',
-                        type: 'saml',
-                        username: profile.nameID,
-                    });
+          const firstName = profile["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"] || "";
+          const lastName = profile["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"] || "";
 
-                    return newUser.save().then(doc => {
-                        const result = new Model(doc);
+          if (!user) {
+            // add new user
+            const upsertUser = new Model({
+              lastLogin: new Date(),
+              name: {
+                first: firstName,
+                last: lastName,
+              },
+              role: "tech",
+              type: "saml",
+              username: profile.nameID,
+            });
 
-                        return done(null, {
-                            token: result.generateToken(config.secret),
-                            user: result,
-                        });
-                    }).catch(() => {
-                        return done(null, false, { message: 'unauthorized' });
-                    });
-                }
-
-                if (!user || !user.active) {
-                    return done(null, false, { message: 'unauthorized' });
-                }
+            upsertUser
+              .save()
+              .then(doc => {
+                const result = new Model(doc);
+                const tokenData = result.generateToken(config.secret);
 
                 return done(null, {
-                    token: user.generateToken(config.secret),
-                    user: user,
+                  expires: tokenData.expires,
+                  token: tokenData.token,
+                  user: result,
                 });
+              })
+              .catch(() => {
+                return done(null, false, {
+                  message: "unauthorized",
+                });
+              });
+          } else if (user) {
+            // update last login time
+            const update = {
+              $set: {
+                lastLogin: new Date(),
+              },
+            };
+
+            // if name missing
+            if (!user.name.first || !user.name.last) {
+              update.$set.name = {
+                first: firstName,
+                last: lastName,
+              };
+            }
+
+            Model.findOneAndUpdate(
+              {
+                username: user.username,
+              },
+              update,
+              {
+                new: true,
+              },
+            )
+              .then(doc => {
+                const result = new Model(doc);
+                const tokenData = result.generateToken(config.secret);
+
+                return done(null, {
+                  expires: tokenData.expires,
+                  token: tokenData.token,
+                  user: result,
+                });
+              })
+              .catch(updateError => {
+                return done(null, false, updateError);
+              });
+          } else {
+            return done(null, false, {
+              message: "unauthorized",
             });
-    }),
+          }
+        });
+    },
+  ),
 );
 
 passport.serializeUser((user, done) => {
-    done(null, user);
+  done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
-    done(null, user);
+  done(null, user);
 });

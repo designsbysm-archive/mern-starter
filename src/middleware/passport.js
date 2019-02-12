@@ -1,24 +1,24 @@
-const config = require("../config");
-const dotenv = require("dotenv");
-const fs = require("fs");
-const LocalStrategy = require("passport-local").Strategy;
-const Model = require("../models/User");
-const passport = require("passport");
-const passportJWT = require("passport-jwt");
-const path = require("path");
+import "dotenv/config";
+import { secret } from "../config";
+import fs from "fs";
+import Model from "../models/User";
+import passport from "passport";
+import passportLocal from "passport-local";
+import passportJWT from "passport-jwt";
+import passportSAML from "passport-saml";
+import path from "path";
+
+const certFile = path.resolve(process.env.SAML_CERT);
+const LocalStrategy = passportLocal.Strategy;
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
-const SamlStrategy = require("passport-saml").Strategy;
-
-// load .env variables
-dotenv.config();
-const certFile = path.resolve(process.env.SAML_CERT);
+const SamlStrategy = passportSAML.Strategy;
 
 passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
-      secretOrKey: config.secret,
+      secretOrKey: secret,
     },
     (jwtPayload, done) => {
       // find the user, make sure they haven't been updated

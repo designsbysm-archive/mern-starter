@@ -1,8 +1,10 @@
-const auditLog = require("../../../tools/auditLog");
-const Model = require("../../../models/User");
-const passport = require("passport");
-const router = require("express")
-  .Router();
+import auditLog from "../../../tools/auditLog";
+import express from "express";
+import getDBModel from "../../../tools/getDBModel";
+import passport from "passport";
+
+const Model = getDBModel("users");
+const router = express.Router();
 
 router.post("/login", (req, res, next) => {
   passport.authenticate("local", { session: false }, (err, data) => {
@@ -96,4 +98,4 @@ router.post("/valid", (req, res, next) => {
   })(req, res, next);
 });
 
-module.exports = router;
+export default router;

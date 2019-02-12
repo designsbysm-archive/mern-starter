@@ -1,12 +1,13 @@
-const router = require("express")
-  .Router();
-const dbModels = require("../../../tools/dbModels");
-const config = require("../../../config");
-const Model = dbModels.getModel("users");
+import express from "express";
+import getDBModel from "../../../tools/getDBModel";
+import { secret } from "../../../config";
+
+const Model = getDBModel("users");
+const router = express.Router();
 
 router.get("/", (req, res, next) => {
   const model = new Model();
-  const token = model.decodeToken(req.headers.authorization, config.secret);
+  const token = model.decodeToken(req.headers.authorization, secret);
 
   Model.findOne({ username: token.username }, (err, user) => {
     if (err) {
@@ -56,4 +57,4 @@ router.post("/query", (req, res) => {
   res.sendStatus(404);
 });
 
-module.exports = router;
+export default router;

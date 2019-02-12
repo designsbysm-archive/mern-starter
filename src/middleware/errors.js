@@ -1,11 +1,12 @@
-const auditLog = require("../tools/auditLog");
-const moment = require("moment");
+import auditLog from "../tools/auditLog";
+import moment from "moment";
 
-module.exports = (err, req, res, next) => {
+// eslint-disable-next-line no-unused-vars
+export default (err, req, res, next) => {
   let code = 500;
   const result = {
     status: "error",
-    message: "unknown error",
+    message: "unknown error", // eslint-disable-line
   };
 
   // format the error data

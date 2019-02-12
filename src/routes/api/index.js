@@ -1,7 +1,7 @@
-const router = require("express")
-  .Router();
+import express from "express";
 
-// api endpoints
+const router = express.Router();
+
 router.use("/v1", require("./v1/index"));
 
 // catch any unhandled /api calls
@@ -9,4 +9,4 @@ router.all("*", (req, res) => {
   res.sendStatus(404);
 });
 
-module.exports = router;
+export default router;

@@ -1,6 +1,7 @@
-const db = require("../mongo");
-const mongoose = require("mongoose");
-const timestamps = require("mongoose-timestamp");
+import db from "../mongo";
+import mongoose from "mongoose";
+import timestamps from "mongoose-timestamp";
+
 const schema = mongoose.Schema({
   make: {
     required: true,
@@ -17,4 +18,5 @@ const schema = mongoose.Schema({
 });
 
 schema.plugin(timestamps);
-module.exports = db.model("Vehicle", schema);
+
+export default db.model("Vehicle", schema);

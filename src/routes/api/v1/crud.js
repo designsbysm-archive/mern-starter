@@ -1,9 +1,10 @@
-const router = require("express")
-  .Router({ mergeParams: true });
-const dbModels = require("../../../tools/dbModels");
-const dbTools = require("../../../tools/dbTools");
-const jsonStream = require("JSONStream");
-const mongoose = require("mongoose");
+import dbTools from "../../../tools/dbTools";
+import express from "express";
+import getDBModel from "../../../tools/getDBModel";
+import jsonStream from "JSONStream";
+import mongoose from "mongoose";
+
+const router = express.Router({ mergeParams: true });
 
 router.delete("/", (req, res, next) => {
   if (!req.checkAuthRole("admin")) {
@@ -11,7 +12,7 @@ router.delete("/", (req, res, next) => {
   }
 
   const kind = req.params.kind;
-  const Model = dbModels.getModel(kind);
+  const Model = getDBModel(kind);
 
   Model.remove({})
     .then(() => {
@@ -29,7 +30,7 @@ router.delete("/:id", (req, res, next) => {
 
   const id = req.params.id;
   const kind = req.params.kind;
-  const Model = dbModels.getModel(kind);
+  const Model = getDBModel(kind);
 
   Model.remove({ _id: id })
     .then(() => {
@@ -40,14 +41,11 @@ router.delete("/:id", (req, res, next) => {
     });
 });
 
-router.get("/", (req, res, next) => {
+router.get("/", (req, res) => {
   const kind = req.params.kind;
-  const Model = dbModels.getModel(kind);
+  const Model = getDBModel(kind);
 
-  // set the content type
   res.type("json");
-
-  // find the docs and stream the result
   Model.find({})
     .cursor()
     .pipe(jsonStream.stringify())
@@ -57,7 +55,7 @@ router.get("/", (req, res, next) => {
 router.get("/:id", (req, res, next) => {
   const id = req.params.id;
   const kind = req.params.kind;
-  const Model = dbModels.getModel(kind);
+  const Model = getDBModel(kind);
 
   Model.findOne({ _id: id })
     .then(doc => {
@@ -73,11 +71,14 @@ router.post("/", (req, res, next) => {
     return res.sendStatus(401);
   }
   if (!req.body) {
-    return next({ status: "error", code: "noRequestData" });
+    return next({
+      code: "noRequestData",
+      status: "error",
+    });
   }
 
   const kind = req.params.kind;
-  const Model = dbModels.getModel(kind);
+  const Model = getDBModel(kind);
   const item = new Model(req.body);
 
   item
@@ -96,10 +97,9 @@ router.put("/", (req, res, next) => {
   }
 
   const kind = req.params.kind;
-  const Model = dbModels.getModel(kind);
+  const Model = getDBModel(kind);
   const bulk = Model.collection.initializeOrderedBulkOp();
   const updates = req.body;
-  // console.log(req.body);
 
   updates.forEach(update => {
     update = dbTools.convertUpdateFields(update);
@@ -124,7 +124,7 @@ router.put("/:id", (req, res, next) => {
 
   const id = req.params.id;
   const kind = req.params.kind;
-  const Model = dbModels.getModel(kind);
+  const Model = getDBModel(kind);
 
   Model.findOneAndUpdate({ _id: id }, req.body, { upsert: true })
     .then(() => {
@@ -140,17 +140,19 @@ router.post("/import", (req, res, next) => {
     return res.sendStatus(401);
   }
   if (!req.body) {
-    return next({ status: "error", code: "noRequestData" });
+    return next({
+      code: "noRequestData",
+      status: "error",
+    });
   }
 
   const kind = req.params.kind;
-  const Model = dbModels.getModel(kind);
-  const queue = [];
+  const Model = getDBModel(kind);
 
-  // add one at a time (make sure added & updated properties add included)
+  // TODO: change to .map
+  const queue = [];
   req.body.forEach(item => {
     const create = new Model(item);
-
     queue.push(create.save());
   });
 
@@ -163,15 +165,12 @@ router.post("/import", (req, res, next) => {
     });
 });
 
-router.post("/query", (req, res, next) => {
+router.post("/query", (req, res) => {
   const kind = req.params.kind;
-  const Model = dbModels.getModel(kind);
+  const Model = getDBModel(kind);
   const query = dbTools.parseFindQuery(req.body);
 
-  // set the content type
   res.type("json");
-
-  // find the docs and stream the result
   Model.find(query.find)
     .limit(query.limit)
     .sort(query.sort)
@@ -180,4 +179,4 @@ router.post("/query", (req, res, next) => {
     .pipe(res);
 });
 
-module.exports = router;
+export default router;

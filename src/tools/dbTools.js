@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-module.exports = {
+export default {
   convertUpdateFields: update => {
     const set = update.updates.$set;
 

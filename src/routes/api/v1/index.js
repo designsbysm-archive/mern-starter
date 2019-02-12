@@ -1,10 +1,10 @@
-const passport = require("passport");
-const router = require("express")
-  .Router({ mergeParams: true });
+import express from "express";
+import passport from "passport";
 
-// api endpoints
+const router = express.Router({ mergeParams: true });
+
 router.use("/sessions", require("./sessions"));
 router.use("/users", passport.authenticate("jwt"), require("./users"));
 router.use("/:kind", passport.authenticate("jwt"), require("./crud"));
 
-module.exports = router;
+export default router;

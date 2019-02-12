@@ -1,9 +1,10 @@
-const bcrypt = require("bcrypt");
-const config = require("../config");
-const db = require("../mongo");
-const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
-const timestamps = require("mongoose-timestamp");
+import bcrypt from "bcrypt";
+import { environment } from "../config";
+import db from "../mongo";
+import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
+import timestamps from "mongoose-timestamp";
+
 const schema = mongoose.Schema({
   active: {
     default: true,
@@ -48,7 +49,7 @@ schema.methods.generateToken = function(secret) {
   if ([
     "development",
     "debug", 
-  ].includes(config.environment)) {
+  ].includes(environment)) {
     // one year
     seconds = 365 * 24 * 60 * 60;
   }
@@ -76,4 +77,5 @@ schema.methods.validatePasswordHash = function(password) {
 };
 
 schema.plugin(timestamps);
-module.exports = db.model("User", schema);
+
+export default db.model("User", schema);

@@ -1,8 +1,8 @@
-const moment = require("moment");
-const config = require("../config");
-const auditLog = require("./auditLog");
+import moment from "moment";
+import { environment } from "../config";
+import auditLog from "./auditLog";
 
-exports.morganAPI = (tokens, req, res) => {
+export default (tokens, req, res) => {
   const body = req.body;
   const code = res.statusCode;
   const method = req.method;
@@ -12,7 +12,7 @@ exports.morganAPI = (tokens, req, res) => {
   // only log api calls (except sessions)
   if (
     !url.startsWith("/api/") ||
-    (config.environment !== "debug" && (url.includes("/sessions/") || url.includes("/stats/")))
+    (environment !== "debug" && (url.includes("/sessions/") || url.includes("/stats/")))
   ) {
     return null;
   }

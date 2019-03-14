@@ -1,5 +1,4 @@
-import auditLog from "../tools/auditLog";
-import moment from "moment";
+import auditLog from "../../tools/auditLog";
 
 // eslint-disable-next-line no-unused-vars
 export default (err, req, res, next) => {
@@ -64,11 +63,11 @@ export default (err, req, res, next) => {
     result.message = err;
   }
 
-  auditLog.log("error", {
+  auditLog("error", {
     code: code,
     message: result.message,
     status: result.status,
-    timestamp: moment()
+    timestamp: new Date()
       .toISOString(),
   });
 

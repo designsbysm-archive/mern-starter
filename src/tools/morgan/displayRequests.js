@@ -1,13 +1,5 @@
-import { environment } from "../config";
-
 export default (tokens, req, res) => {
-  if (environment !== "debug") {
-    return;
-  }
-
   const status = res.statusCode;
-
-  // get status color
   const color =
     status >= 500
       ? 31 // red
@@ -20,8 +12,8 @@ export default (tokens, req, res) => {
             : 0; // no color
 
   return [
-    "\x1b[37m" + tokens.method(req, res),
-    "\x1b[" + color + "m" + tokens.status(req, res),
-    "\x1b[0m" + tokens.url(req, res),
+    `\x1b[37m${tokens.method(req, res)}`,
+    `\x1b[${color}m${tokens.status(req, res)}`,
+    `\x1b[0m${tokens.url(req, res)}`,
   ].join(" ");
 };

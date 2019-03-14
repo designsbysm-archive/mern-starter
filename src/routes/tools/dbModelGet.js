@@ -1,5 +1,5 @@
-import User from "../models/User";
-import Vehicle from "../models/Vehicle";
+import User from "../../models/User";
+import Vehicle from "../../models/Vehicle";
 
 export default kind => {
   let model = null;

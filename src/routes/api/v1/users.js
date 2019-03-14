@@ -1,15 +1,15 @@
 import express from "express";
-import getDBModel from "../../../tools/getDBModel";
+import dbModelGet from "../../tools/dbModelGet";
 import { secret } from "../../../config";
 
-const Model = getDBModel("users");
+const Model = dbModelGet("users");
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
   const model = new Model();
   const token = model.decodeToken(req.headers.authorization, secret);
 
-  Model.findOne({ username: token.username }, (err, user) => {
+  Model.findOne({ _id: token.id }, (err, user) => {
     if (err) {
       return next(err);
     }

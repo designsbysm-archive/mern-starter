@@ -1,10 +1,14 @@
+import crud from "./crud";
 import express from "express";
 import passport from "passport";
+import sessions from "./sessions";
+import users from "./users";
 
+const auth = passport.authenticate("jwt");
 const router = express.Router({ mergeParams: true });
 
-router.use("/sessions", require("./sessions"));
-router.use("/users", passport.authenticate("jwt"), require("./users"));
-router.use("/:kind", passport.authenticate("jwt"), require("./crud"));
+router.use("/sessions", sessions);
+router.use("/users", auth, users);
+router.use("/:kind", auth, crud);
 
 export default router;

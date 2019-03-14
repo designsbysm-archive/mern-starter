@@ -1,0 +1,9 @@
+GET http://{{host}}:{{port}}/api/v1/vehicles/5c61dd34fd75960080eba636
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+GET http://{{host}}:{{port}}/api/v1/vehicles
+Authorization: Bearer {{token}}
+Content-Type: application/json

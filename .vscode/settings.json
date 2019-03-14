@@ -1,0 +1,13 @@
+{
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "adminP": "admin",
+      "adminU": "admin",
+      "port": "5000"
+    },
+    "local": {
+      "host": "localhost",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODQxMTk1NzksImlkIjoiNWM2MWQxNjgwODllYjI3MmY1Zjk3NTI3IiwidXBkYXRlZCI6IjIwMTktMDItMTFUMTk6NDc6NTIuODI4WiIsImlhdCI6MTU1MjU4MzU3OX0.nySkclmSH4VkbYWhF5VwH6JJuPZpDIKKVVifJcZ8Cjk"
+    }
+  }
+}

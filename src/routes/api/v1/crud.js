@@ -1,8 +1,8 @@
-import dbTools from "../../../tools/dbTools";
 import express from "express";
-import getDBModel from "../../../tools/getDBModel";
+import dbModelGet from "../../tools/dbModelGet";
 import jsonStream from "JSONStream";
 import mongoose from "mongoose";
+import parseQueryFind from "../../tools/parseQueryFind";
 
 const router = express.Router({ mergeParams: true });
 
@@ -12,7 +12,7 @@ router.delete("/", (req, res, next) => {
   }
 
   const kind = req.params.kind;
-  const Model = getDBModel(kind);
+  const Model = dbModelGet(kind);
 
   Model.remove({})
     .then(() => {
@@ -30,7 +30,7 @@ router.delete("/:id", (req, res, next) => {
 
   const id = req.params.id;
   const kind = req.params.kind;
-  const Model = getDBModel(kind);
+  const Model = dbModelGet(kind);
 
   Model.remove({ _id: id })
     .then(() => {
@@ -43,7 +43,7 @@ router.delete("/:id", (req, res, next) => {
 
 router.get("/", (req, res) => {
   const kind = req.params.kind;
-  const Model = getDBModel(kind);
+  const Model = dbModelGet(kind);
 
   res.type("json");
   Model.find({})
@@ -55,7 +55,7 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res, next) => {
   const id = req.params.id;
   const kind = req.params.kind;
-  const Model = getDBModel(kind);
+  const Model = dbModelGet(kind);
 
   Model.findOne({ _id: id })
     .then(doc => {
@@ -78,7 +78,7 @@ router.post("/", (req, res, next) => {
   }
 
   const kind = req.params.kind;
-  const Model = getDBModel(kind);
+  const Model = dbModelGet(kind);
   const item = new Model(req.body);
 
   item
@@ -97,12 +97,12 @@ router.put("/", (req, res, next) => {
   }
 
   const kind = req.params.kind;
-  const Model = getDBModel(kind);
+  const Model = dbModelGet(kind);
   const bulk = Model.collection.initializeOrderedBulkOp();
   const updates = req.body;
 
   updates.forEach(update => {
-    update = dbTools.convertUpdateFields(update);
+    // update = dbTools.convertUpdateFields(update);
     bulk.find({ _id: mongoose.Types.ObjectId(update.id) })
       .update(update.updates);
   });
@@ -124,7 +124,7 @@ router.put("/:id", (req, res, next) => {
 
   const id = req.params.id;
   const kind = req.params.kind;
-  const Model = getDBModel(kind);
+  const Model = dbModelGet(kind);
 
   Model.findOneAndUpdate({ _id: id }, req.body, { upsert: true })
     .then(() => {
@@ -147,7 +147,7 @@ router.post("/import", (req, res, next) => {
   }
 
   const kind = req.params.kind;
-  const Model = getDBModel(kind);
+  const Model = dbModelGet(kind);
 
   // TODO: change to .map
   const queue = [];
@@ -167,8 +167,8 @@ router.post("/import", (req, res, next) => {
 
 router.post("/query", (req, res) => {
   const kind = req.params.kind;
-  const Model = getDBModel(kind);
-  const query = dbTools.parseFindQuery(req.body);
+  const Model = dbModelGet(kind);
+  const query = parseQueryFind(req.body);
 
   res.type("json");
   Model.find(query.find)

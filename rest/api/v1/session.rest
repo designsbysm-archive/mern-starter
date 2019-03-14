@@ -1,0 +1,19 @@
+POST http://{{host}}:{{port}}/api/v1/sessions/login
+Content-Type: application/json
+
+{
+  "username": "{{adminU}}",
+	"password": "{{adminP}}"
+}
+
+###
+
+POST http://{{host}}:{{port}}/api/v1/sessions/logout
+Content-Type: application/json
+
+###
+
+POST http://{{host}}:{{port}}/api/v1/sessions/valid
+Authorization: Bearer {{token}}
+Content-Type: application/json
+

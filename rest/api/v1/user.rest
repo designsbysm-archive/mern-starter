@@ -1,0 +1,16 @@
+GET http://{{host}}:{{port}}/api/v1/users
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+POST http://{{host}}:{{port}}/api/v1/users/query
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "find": {
+    "_id": "5c61d168089eb272f5f97527"
+  }
+}
+

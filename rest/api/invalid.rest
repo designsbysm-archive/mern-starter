@@ -1,0 +1,7 @@
+GET http://{{host}}:{{port}}/api/
+Content-Type: application/json
+
+###
+
+GET http://{{host}}:{{port}}/api/v1
+Content-Type: application/json

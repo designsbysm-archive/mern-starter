@@ -1,8 +1,9 @@
 import express from "express";
+import v1 from "./v1";
 
 const router = express.Router();
 
-router.use("/v1", require("./v1/index"));
+router.use("/v1", v1);
 
 // catch any unhandled /api calls
 router.all("*", (req, res) => {

@@ -1,4 +1,3 @@
-import Boom from "boom";
 import User from "../../models/User";
 import Vehicle from "../../models/Vehicle";
 

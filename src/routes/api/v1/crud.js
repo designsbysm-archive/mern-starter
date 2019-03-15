@@ -1,4 +1,3 @@
-import Boom from "boom";
 import getModel from "../../tools/getModel";
 import express from "express";
 import jsonStream from "JSONStream";
@@ -36,7 +35,7 @@ router.delete("/:id", validateRole("admin"), validateModel("kind"), (req, res, n
     });
 });
 
-router.get("/", validateModel("kind"), (req, res, next) => {
+router.get("/", validateModel("kind"), (req, res) => {
   const { kind } = req.params;
   const Model = getModel(kind);
 
@@ -56,7 +55,6 @@ router.get("/:id", validateRole("super"), validateModel("kind"), (req, res, next
       res.json(doc);
     })
     .catch(err => {
-      console.log(err);
       next(err);
     });
 });
@@ -110,7 +108,8 @@ router.put("/:id", validateRole("super"), validateModel("kind"), validateEmptyBo
     });
 });
 
-router.post("/query", validateModel("kind"), (req, res, next) => {
+// TODO: combine with GET /, no body get all
+router.post("/query", validateModel("kind"), (req, res) => {
   const { kind } = req.params;
   const Model = getModel(kind);
   const query = parseQueryFind(req.body);

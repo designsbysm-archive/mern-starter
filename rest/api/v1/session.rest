@@ -16,4 +16,3 @@ Content-Type: application/json
 POST http://{{host}}:{{port}}/api/v1/sessions/valid
 Authorization: Bearer {{token}}
 Content-Type: application/json
-

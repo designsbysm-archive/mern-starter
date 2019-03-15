@@ -1,15 +1,17 @@
+import Boom from "boom";
 import express from "express";
-import dbModelGet from "../../tools/dbModelGet";
 import { secret } from "../../../config";
+import User from "../../../models/User";
+import validateEmptyBody from "../../middleware/validateEmptyBody";
+import validateRole from "../../middleware/validateRole";
 
-const Model = dbModelGet("users");
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
-  const model = new Model();
-  const token = model.decodeToken(req.headers.authorization, secret);
+  const user = new User();
+  const token = user.decodeToken(req.headers.authorization, secret);
 
-  Model.findOne({ _id: token.id }, (err, user) => {
+  User.findOne({ _id: token.id }, (err, user) => {
     if (err) {
       return next(err);
     }
@@ -18,33 +20,25 @@ router.get("/", (req, res, next) => {
   });
 });
 
-router.post("/", (req, res, next) => {
-  if (!req.checkAuthRole("admin")) {
-    return res.sendStatus(401);
-  }
-
-  const user = new Model(req.body);
+router.post("/", validateRole("admin"), validateEmptyBody, (req, res, next) => {
+  const user = new User(req.body);
   user.password = user.generatePasswordHash(req.body.password);
 
-  user.save(error => {
-    if (error) {
-      return next(error);
+  user.save(err => {
+    if (err) {
+      return next(err);
     }
 
     res.sendStatus(201);
   });
 });
 
-router.put("/:id", (req, res, next) => {
-  if (!req.checkAuthRole("admin")) {
-    return res.sendStatus(401);
-  }
-
-  const id = req.params.id;
-  const user = new Model();
+router.put("/:id", validateRole("admin"), validateEmptyBody, (req, res, next) => {
+  const { id } = req.params;
+  const user = new User();
   req.body.password = user.generatePasswordHash(req.body.password);
 
-  Model.findOneAndUpdate({ _id: id }, req.body, { new: true })
+  User.findOneAndUpdate({ _id: id }, req.body, { new: true })
     .then(() => {
       res.sendStatus(200);
     })
@@ -53,8 +47,8 @@ router.put("/:id", (req, res, next) => {
     });
 });
 
-router.post("/query", (req, res) => {
-  res.sendStatus(404);
+router.post("/query", (req, res, next) => {
+  next(Boom.notFound());
 });
 
 export default router;

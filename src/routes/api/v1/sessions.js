@@ -1,9 +1,8 @@
 import auditLog from "../../../tools/auditLog";
 import express from "express";
-import getModel from "../../tools/dbModelGet";
 import passport from "passport";
+import User from "../../../models/User";
 
-const Model = getModel("users");
 const router = express.Router();
 
 router.post("/login", (req, res, next) => {
@@ -45,7 +44,7 @@ router.post("/logout", (req, res, next) => {
       });
 
       // invalidate the current token
-      Model.findOneAndUpdate({ username: user.username }, {})
+      User.findOneAndUpdate({ username: user.username }, {})
         .catch(updateError => {
           next(updateError);
         });
@@ -62,31 +61,31 @@ router.post("/logout", (req, res, next) => {
   })(req, res, next);
 });
 
-// router.get("/saml", passport.authenticate("saml", { session: false }));
+router.get("/saml", passport.authenticate("saml", { session: false }));
 
-// router.post("/saml/response", (req, res, next) => {
-//   passport.authenticate("saml", { session: false }, (err, data) => {
-//     if (err) {
-//       return next(err);
-//     } else if (!data.token) {
-//       auditLog("authentication", {
-//         action: "invalid",
-//         method: "saml",
-//         username: "unknown",
-//       });
+router.post("/saml/response", (req, res, next) => {
+  passport.authenticate("saml", { session: false }, (err, data) => {
+    if (err) {
+      return next(err);
+    } else if (!data.token) {
+      auditLog("authentication", {
+        action: "invalid",
+        method: "saml",
+        username: "unknown",
+      });
 
-//       return res.sendStatus(401);
-//     } else if (data.user.username) {
-//       auditLog("authentication", {
-//         action: "login",
-//         method: "saml",
-//         username: data.user.username,
-//       });
-//     }
+      return res.sendStatus(401);
+    } else if (data.user.username) {
+      auditLog("authentication", {
+        action: "login",
+        method: "saml",
+        username: data.user.username,
+      });
+    }
 
-//     res.redirect(`/?token=${data.token}`);
-//   })(req, res, next);
-// });
+    res.redirect(`/?token=${data.token}`);
+  })(req, res, next);
+});
 
 router.post("/valid", (req, res, next) => {
   passport.authenticate("jwt", { session: false }, (err, token) => {

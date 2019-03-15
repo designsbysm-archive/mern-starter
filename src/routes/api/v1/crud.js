@@ -1,18 +1,18 @@
+import Boom from "boom";
+import getModel from "../../tools/getModel";
 import express from "express";
-import dbModelGet from "../../tools/dbModelGet";
 import jsonStream from "JSONStream";
 import mongoose from "mongoose";
 import parseQueryFind from "../../tools/parseQueryFind";
+import validateEmptyBody from "../../middleware/validateEmptyBody";
+import validateModel from "../../middleware/validateModel";
+import validateRole from "../../middleware/validateRole";
 
 const router = express.Router({ mergeParams: true });
 
-router.delete("/", (req, res, next) => {
-  if (!req.checkAuthRole("admin")) {
-    return res.sendStatus(401);
-  }
-
-  const kind = req.params.kind;
-  const Model = dbModelGet(kind);
+router.delete("/", validateRole("admin"), validateModel("kind"), (req, res, next) => {
+  const { kind } = req.params;
+  const Model = getModel(kind);
 
   Model.remove({})
     .then(() => {
@@ -23,14 +23,9 @@ router.delete("/", (req, res, next) => {
     });
 });
 
-router.delete("/:id", (req, res, next) => {
-  if (!req.checkAuthRole("admin")) {
-    return res.sendStatus(401);
-  }
-
-  const id = req.params.id;
-  const kind = req.params.kind;
-  const Model = dbModelGet(kind);
+router.delete("/:id", validateRole("admin"), validateModel("kind"), (req, res, next) => {
+  const { id, kind } = req.params;
+  const Model = getModel(kind);
 
   Model.remove({ _id: id })
     .then(() => {
@@ -41,9 +36,9 @@ router.delete("/:id", (req, res, next) => {
     });
 });
 
-router.get("/", (req, res) => {
-  const kind = req.params.kind;
-  const Model = dbModelGet(kind);
+router.get("/", validateModel("kind"), (req, res, next) => {
+  const { kind } = req.params;
+  const Model = getModel(kind);
 
   res.type("json");
   Model.find({})
@@ -52,33 +47,23 @@ router.get("/", (req, res) => {
     .pipe(res);
 });
 
-router.get("/:id", (req, res, next) => {
-  const id = req.params.id;
-  const kind = req.params.kind;
-  const Model = dbModelGet(kind);
+router.get("/:id", validateRole("super"), validateModel("kind"), (req, res, next) => {
+  const { id, kind } = req.params;
+  const Model = getModel(kind);
 
   Model.findOne({ _id: id })
     .then(doc => {
       res.json(doc);
     })
     .catch(err => {
+      console.log(err);
       next(err);
     });
 });
 
-router.post("/", (req, res, next) => {
-  if (!req.checkAuthRole("super")) {
-    return res.sendStatus(401);
-  }
-  if (!req.body) {
-    return next({
-      code: "noRequestData",
-      status: "error",
-    });
-  }
-
-  const kind = req.params.kind;
-  const Model = dbModelGet(kind);
+router.post("/", validateRole("super"), validateModel("kind"), validateEmptyBody, (req, res, next) => {
+  const { kind } = req.params;
+  const Model = getModel(kind);
   const item = new Model(req.body);
 
   item
@@ -91,20 +76,15 @@ router.post("/", (req, res, next) => {
     });
 });
 
-router.put("/", (req, res, next) => {
-  if (!req.checkAuthRole("super")) {
-    return res.sendStatus(401);
-  }
-
-  const kind = req.params.kind;
-  const Model = dbModelGet(kind);
+router.put("/", validateRole("super"), validateModel("kind"), validateEmptyBody, (req, res, next) => {
+  const { kind } = req.params;
+  const Model = getModel(kind);
   const bulk = Model.collection.initializeOrderedBulkOp();
   const updates = req.body;
 
-  updates.forEach(update => {
-    // update = dbTools.convertUpdateFields(update);
-    bulk.find({ _id: mongoose.Types.ObjectId(update.id) })
-      .update(update.updates);
+  updates.forEach(item => {
+    bulk.find({ _id: mongoose.Types.ObjectId(item.id) })
+      .update(item.updates);
   });
 
   if (bulk.length > 0) {
@@ -117,14 +97,9 @@ router.put("/", (req, res, next) => {
   }
 });
 
-router.put("/:id", (req, res, next) => {
-  if (!req.checkAuthRole("super")) {
-    return res.sendStatus(401);
-  }
-
-  const id = req.params.id;
-  const kind = req.params.kind;
-  const Model = dbModelGet(kind);
+router.put("/:id", validateRole("super"), validateModel("kind"), validateEmptyBody, (req, res, next) => {
+  const { id, kind } = req.params;
+  const Model = getModel(kind);
 
   Model.findOneAndUpdate({ _id: id }, req.body, { upsert: true })
     .then(() => {
@@ -135,39 +110,9 @@ router.put("/:id", (req, res, next) => {
     });
 });
 
-router.post("/import", (req, res, next) => {
-  if (!req.checkAuthRole("super")) {
-    return res.sendStatus(401);
-  }
-  if (!req.body) {
-    return next({
-      code: "noRequestData",
-      status: "error",
-    });
-  }
-
-  const kind = req.params.kind;
-  const Model = dbModelGet(kind);
-
-  // TODO: change to .map
-  const queue = [];
-  req.body.forEach(item => {
-    const create = new Model(item);
-    queue.push(create.save());
-  });
-
-  Promise.all(queue)
-    .then(docs => {
-      res.send(docs);
-    })
-    .catch(err => {
-      next(err);
-    });
-});
-
-router.post("/query", (req, res) => {
-  const kind = req.params.kind;
-  const Model = dbModelGet(kind);
+router.post("/query", validateModel("kind"), (req, res, next) => {
+  const { kind } = req.params;
+  const Model = getModel(kind);
   const query = parseQueryFind(req.body);
 
   res.type("json");

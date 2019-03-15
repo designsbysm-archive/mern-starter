@@ -5,3 +5,21 @@ Content-Type: application/json
 
 GET http://{{host}}:{{port}}/api/v1
 Content-Type: application/json
+
+###
+
+PUT http://{{host}}:{{port}}/api/v2/vehicles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+POST http://{{host}}:{{port}}/api/v1/vehicles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+PUT http://{{host}}:{{port}}/api/v1/vehicles
+Authorization: Bearer {{token}}
+Content-Type: application/json

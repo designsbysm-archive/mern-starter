@@ -1,6 +1,6 @@
 import "dotenv/config";
 import displayRequests from "./tools/morgan/displayRequests";
-import errors from "./routes/middleware/errors";
+import errors from "./routes/middleware/errorHandler";
 import { environment, isDebug, port } from "./config";
 import express from "express";
 import helmet from "helmet";
@@ -30,11 +30,11 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// if (isDebug()) {
-app.use(morgan(displayRequests));
-// } else if (!isDev()) {
-app.use(morgan(saveRequests));
-// }
+if (isDebug()) {
+  app.use(morgan(displayRequests));
+} else if (!isDev()) {
+  app.use(morgan(saveRequests));
+}
 
 app.use(routes);
 app.use(errors);

@@ -11,12 +11,12 @@ router.get("/", (req, res, next) => {
   const user = new User();
   const token = user.decodeToken(req.headers.authorization, secret);
 
-  User.findOne({ _id: token.id }, (err, user) => {
+  User.findOne({ _id: token.id }, (err, doc) => {
     if (err) {
       return next(err);
     }
 
-    res.json(user);
+    res.json(doc);
   });
 });
 
@@ -47,6 +47,7 @@ router.put("/:id", validateRole("admin"), validateEmptyBody, (req, res, next) =>
     });
 });
 
+// TODO: remove
 router.post("/query", (req, res, next) => {
   next(Boom.notFound());
 });

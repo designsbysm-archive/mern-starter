@@ -43,7 +43,16 @@
     "build:client": "cd client && npm run build",
     "build:server": "babel src -d build",
     "prebuild": "rm -rf build",
-    "start": "run-p server client"
+    "start": "run-p server client",
+    "lint": "run-s lint:prettier lint:js lint:scss",
+    "lint:prettier": "run-s lint:server:prettier lint:client:prettier",
+    "lint:js": "run-s lint:server:js lint:client:js",
+    "lint:scss": "run-s lint:client:scss",
+    "lint:server:js": "eslint --fix './src/**/*.js'",
+    "lint:server:prettier": "prettier --write './src/**/*'",
+    "lint:client:js": "eslint --fix './client/src/**/*.jsx'",
+    "lint:client:prettier": "prettier --write './client/src/**/*'",
+    "lint:client:scss": "stylelint --fix '.src/**/*.scss'"
   },
   "nodemonConfig": {
     "delay": "500"

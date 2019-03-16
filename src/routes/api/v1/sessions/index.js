@@ -5,10 +5,19 @@ import controller from "../../../../controllers/api/v1/sessions";
 const router = express.Router();
 const validateJWT = passport.authenticate("jwt");
 
-router.post("/login", controller.login);
-router.post("/logout", validateJWT, controller.logout);
-router.get("/saml", controller.saml);
-router.post("/saml/response", controller.samlResponse);
-router.post("/valid", validateJWT, controller.valid);
+router.route("/login")
+  .post(controller.login);
+
+router.route("/logout")
+  .post(validateJWT, controller.logout);
+
+router.route("/saml")
+  .get(controller.saml);
+
+router.route("/saml/response")
+  .post(controller.samlResponse);
+
+router.route("/valid")
+  .post(validateJWT, controller.valid);
 
 export default router;

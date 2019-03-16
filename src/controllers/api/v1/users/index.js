@@ -15,7 +15,7 @@ export default {
     });
   },
 
-  read: (req, res, next) => {
+  current: (req, res, next) => {
     const user = new User();
     const token = user.decodeToken(req.headers.authorization, secret);
 

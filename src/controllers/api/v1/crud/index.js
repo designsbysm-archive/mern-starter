@@ -54,8 +54,6 @@ export default {
     const { kind } = req.params;
     const Model = getModel(kind);
 
-    console.log(kind);
-
     res.type("json");
     Model.find({})
       .cursor()
@@ -66,8 +64,6 @@ export default {
   readOne: (req, res, next) => {
     const { id, kind } = req.params;
     const Model = getModel(kind);
-
-    console.log(kind, Model, req.params);
 
     Model.findOne({ _id: id })
       .then(doc => {

@@ -1,8 +1,0 @@
-GET http://{{host}}:{{port}}/
-Content-Type: application/json
-
-###
-
-GET http://{{host}}:{{port}}/static/js/main.b2a1a7a5.chunk.js
-Content-Type: application/json
-

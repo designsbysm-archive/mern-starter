@@ -1,6 +1,6 @@
 import express from "express";
 import passport from "passport";
-import controller from "../../../../controllers/api/v1/sessions";
+import controller from "./controller";
 
 const router = express.Router();
 const validateJWT = passport.authenticate("jwt");

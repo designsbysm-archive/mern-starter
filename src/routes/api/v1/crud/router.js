@@ -1,5 +1,5 @@
 import express from "express";
-import controller from "../../../../controllers/api/v1/crud";
+import controller from "./controller";
 import passport from "passport";
 import validateEmptyBody from "../../../../middleware/validateEmptyBody";
 import validateModel from "../../../../middleware/validateModel";

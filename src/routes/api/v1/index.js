@@ -1,12 +1,12 @@
 import express from "express";
-import crudRoute from "./crud";
-import sessionsRoute from "./sessions";
-import usersRoute from "./users";
+import crud from "./crud/router";
+import sessions from "./sessions/router";
+import users from "./users/router";
 
 const router = express.Router();
 
-router.use("/sessions", sessionsRoute);
-router.use("/users", usersRoute);
-router.use("/:kind", crudRoute);
+router.use("/sessions", sessions);
+router.use("/users", users);
+router.use("/:kind", crud);
 
 export default router;

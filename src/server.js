@@ -14,6 +14,12 @@ import session from "express-session";
 const app = express();
 const SessionStore = MongoDBStore(session);
 
+if (isDebug()) {
+  app.use(morgan(displayRequests));
+} else if (!isDev()) {
+  app.use(morgan(saveRequests));
+}
+
 app.use(helmet());
 app.use(
   session({
@@ -29,16 +35,9 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
-if (isDebug()) {
-  app.use(morgan(displayRequests));
-} else if (!isDev()) {
-  app.use(morgan(saveRequests));
-}
-
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false }));
-
 app.use(routes);
 app.use(errors);
+
 app.listen(port, () => console.info("%s server listening on %s", environment, port));

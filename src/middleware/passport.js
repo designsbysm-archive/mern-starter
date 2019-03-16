@@ -1,7 +1,7 @@
 import "dotenv/config";
-import { secret } from "../../config";
+import { secret } from "../config";
 import fs from "fs";
-import Model from "../../models/User";
+import Model from "../models/User";
 import passport from "passport";
 import passportLocal from "passport-local";
 import passportJWT from "passport-jwt";

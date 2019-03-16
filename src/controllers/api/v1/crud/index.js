@@ -1,7 +1,7 @@
 import Boom from "boom";
-import getModel from "../tools/getModel";
+import getModel from "../../../../tools/getModel";
 import jsonStream from "JSONStream";
-import parseQueryFind from "../tools/parseQueryFind";
+import parseQueryFind from "../../../../tools/parseQueryFind";
 
 export default {
   create: (req, res, next) => {
@@ -53,6 +53,8 @@ export default {
   readAll: (req, res) => {
     const { kind } = req.params;
     const Model = getModel(kind);
+
+    console.log(kind);
 
     res.type("json");
     Model.find({})

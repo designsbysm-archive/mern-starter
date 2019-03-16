@@ -1,6 +1,6 @@
 import "dotenv/config";
 import displayRequests from "./tools/morgan/displayRequests";
-import errors from "./routes/middleware/errorHandler";
+import errors from "./middleware/errorHandler";
 import { environment, isDebug, port } from "./config";
 import express from "express";
 import helmet from "helmet";

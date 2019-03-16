@@ -1,9 +1,5 @@
-import Boom from "boom";
-import getModel from "../tools/getModel";
-import jsonStream from "JSONStream";
-import parseQueryFind from "../tools/parseQueryFind";
-import User from "../../models/User";
-import { secret } from "../../config";
+import User from "../../../../models/User";
+import { secret } from "../../../../config";
 
 export default {
   create: (req, res, next) => {

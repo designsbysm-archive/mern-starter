@@ -1,8 +1,8 @@
 import Boom from "boom";
 import passport from "passport";
-import User from "../../models/User";
+import User from "../../../../models/User";
 
-require("../middleware/passport");
+require("../../../../middleware/passport");
 
 export default {
   login: (req, res, next) => {
@@ -91,7 +91,7 @@ export default {
   },
 
   valid: (req, res, next) => {
-    passport.authenticate("jwt", { session: false }, (err, token) => {
+    passport.authenticate("jwt", { session: false }, err => {
       if (err) {
         return next(err);
       }

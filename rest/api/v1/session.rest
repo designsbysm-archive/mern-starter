@@ -9,6 +9,17 @@ Content-Type: application/json
 ###
 
 POST http://{{host}}:{{port}}/api/v1/sessions/logout
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+GET http://{{host}}:{{port}}/api/v1/sessions/saml
+Content-Type: application/json
+
+###
+
+POST http://{{host}}:{{port}}/api/v1/sessions/saml/response
 Content-Type: application/json
 
 ###

@@ -3,5 +3,6 @@ Content-Type: application/json
 
 ###
 
-POST http://{{host}}:{{port}}/
+GET http://{{host}}:{{port}}/static/js/main.b2a1a7a5.chunk.js
 Content-Type: application/json
+

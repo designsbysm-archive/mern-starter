@@ -7,7 +7,7 @@
     },
     "local": {
       "host": "localhost",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODQxMTk1NzksImlkIjoiNWM2MWQxNjgwODllYjI3MmY1Zjk3NTI3IiwidXBkYXRlZCI6IjIwMTktMDItMTFUMTk6NDc6NTIuODI4WiIsImlhdCI6MTU1MjU4MzU3OX0.nySkclmSH4VkbYWhF5VwH6JJuPZpDIKKVVifJcZ8Cjk"
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODQyMjY5NzksImlkIjoiNWM2MWQxNjgwODllYjI3MmY1Zjk3NTI3IiwidXBkYXRlZCI6IjIwMTktMDMtMTVUMjI6MzA6MDEuOTY3WiIsImlhdCI6MTU1MjY5MDk3OX0.LRyGhVrg8Ir4eLS_ZuAZkd75v5eIu-2_0b4oI3CM2rM"
     }
   }
 }

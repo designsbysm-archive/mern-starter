@@ -1,4 +1,4 @@
-GET http://{{host}}:{{port}}/api/v1/vehicles/5c61dd34fd75960080eba636
+POST http://{{host}}:{{port}}/api/v1/vehicles
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -7,3 +7,51 @@ Content-Type: application/json
 GET http://{{host}}:{{port}}/api/v1/vehicles
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+###
+
+PUT http://{{host}}:{{port}}/api/v1/vehicles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+DELETE http://{{host}}:{{port}}/api/v1/vehicles
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+POST http://{{host}}:{{port}}/api/v1/vehicles/5c61dd34fd75960080eba636
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+GET http://{{host}}:{{port}}/api/v1/vehicles/5c61dd34fd75960080eba636
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+PUT http://{{host}}:{{port}}/api/v1/vehicles/5c61dd34fd75960080eba636
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+DELETE http://{{host}}:{{port}}/api/v1/vehicles/5c61dd34fd75960080eba636
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+POST http://{{host}}:{{port}}/api/v1/vehicles/query
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+ {
+   "find": {
+     "make": "Honda"
+   }
+ }

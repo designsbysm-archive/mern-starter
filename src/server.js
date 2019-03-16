@@ -11,14 +11,14 @@ import routes from "./routes";
 import saveRequests from "./tools/morgan/saveRequests";
 import session from "express-session";
 
-const SessionStore = MongoDBStore(session);
 const app = express();
+const SessionStore = MongoDBStore(session);
 
 app.use(helmet());
 app.use(
   session({
     resave: true,
-    saveUninitialized: true,
+    saveUninitialized: false,
     secret: process.env.SESSION_SECRET,
     store: new SessionStore({
       collection: "sessions",
@@ -35,6 +35,9 @@ if (isDebug()) {
 } else if (!isDev()) {
   app.use(morgan(saveRequests));
 }
+
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: false }));
 
 app.use(routes);
 app.use(errors);

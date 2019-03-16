@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { environment } from "../config";
+import { isDev } from "../config";
 import db from "../mongo";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
@@ -9,9 +9,6 @@ const schema = mongoose.Schema({
   active: {
     default: true,
     type: Boolean,
-  },
-  lastLogin: {
-    type: Date,
   },
   name: {
     first: {
@@ -45,12 +42,8 @@ schema.methods.decodeToken = function(header, secret) {
 };
 
 schema.methods.generateToken = function(secret) {
-  let seconds = 12 * 60 * 60;
-  if ([
-    "development",
-    "debug", 
-  ].includes(environment)) {
-    // one year
+  let seconds = 8 * 60 * 60;
+  if (isDev()) {
     seconds = 365 * 24 * 60 * 60;
   }
   const timestamp = Math.floor(Date.now() / 1000) + seconds;

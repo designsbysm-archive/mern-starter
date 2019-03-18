@@ -1,4 +1,6 @@
 import Boom from "boom";
+import Logger from "../../../../tools/fileLogger";
+const logger = Logger("authentication");
 import passport from "passport";
 import User from "../../../../models/User";
 
@@ -8,24 +10,27 @@ export default {
       if (err) {
         return next(err);
       } else if (!data.token) {
-        // auditLog("authentication", {
-        //   action: "invalid",
-        //   method: "basic",
-        //   username: req.body.username,
-        // });
+        logger.log({
+          action: "invalid",
+          level: "warn",
+          stratagy: "basic",
+          timestamp: new Date(),
+          username: req.body.username,
+        });
 
         return next(Boom.unauthorized());
       }
 
-      const { expires, token, username } = data;
+      const { expires, token, user } = data;
+      const { username } = user;
 
-      // console.log(data);
-
-      // auditLog("authentication", {
-      //   action: "login",
-      //   method: "basic",
-      //   username: data.user.username,
-      // });
+      logger.log({
+        action: "login",
+        level: "info",
+        stratagy: "basic",
+        timestamp: new Date(),
+        username: username,
+      });
 
       res.json({
         expires,
@@ -40,12 +45,15 @@ export default {
         return next(err);
       }
 
-      // console.log(user);
+      const { type, username } = user;
 
-      // auditLog("authentication", {
-      //   action: "logout",
-      //   method: "",
-      //   username: user.username,
+      logger.log({
+        action: "logout",
+        level: "info",
+        stratagy: type,
+        timestamp: new Date(),
+        username: username,
+      });
 
       // invalidate the current token
       User.findOneAndUpdate({ _id: user.id }, {})
@@ -70,23 +78,29 @@ export default {
       if (err) {
         return next(err);
       } else if (!data.token) {
-        // auditLog("authentication", {
-        //   action: "invalid",
-        //   method: "saml",
-        //   username: "unknown",
-        // });
+        logger.log({
+          action: "invalid",
+          level: "warn",
+          stratagy: "saml",
+          timestamp: new Date(),
+          username: "unknown",
+        });
 
         return next(Boom.unauthorized());
       }
 
-      // } else if (data.user.username) {
-      //   auditLog("authentication", {
-      //     action: "login",
-      //     method: "saml",
-      //     username: data.user.username,
-      //   });
+      const { token, user } = data;
+      const { username } = user;
 
-      res.redirect(`/?token=${data.token}`);
+      logger.log({
+        action: "login",
+        level: "info",
+        stratagy: "saml",
+        timestamp: new Date(),
+        username: username,
+      });
+
+      res.redirect(`/?token=${token}`);
     })(req, res, next);
   },
 

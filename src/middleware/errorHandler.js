@@ -1,30 +1,34 @@
-// import auditLog from "../../tools/auditLog";
 import Boom from "boom";
+import Logger from "../tools/fileLogger";
+const logger = Logger("errors");
 
 // eslint-disable-next-line no-unused-vars
 export default (err, req, res, next) => {
+  let boom = {};
+
   if (err.isBoom) {
-    return res.status(err.output.statusCode)
-      .json(err.output.payload);
+    boom = err;
+  } else {
+    console.error(err);
+
+    boom = Boom.badRequest();
+    if (err instanceof Error) {
+      boom = Boom.boomify(err, {
+        statusCode: 400,
+      });
+    }
   }
 
-  console.error(err);
+  const { statusCode, payload } = boom.output;
+  const { message } = payload;
 
-  let boom = Boom.badRequest();
-  if (err instanceof Error) {
-    boom = Boom.boomify(err, {
-      statusCode: 400,
-    });
-  }
+  logger.log({
+    code: statusCode,
+    level: "error",
+    message,
+    timestamp: new Date(),
+  });
 
-  res.status(boom.output.statusCode)
-    .json(boom.output.payload);
-
-  // auditLog("error", {
-  //   code: code,
-  //   message: result.message,
-  //   status: result.status,
-  //   timestamp: new Date()
-  //     .toISOString(),
-  // });
+  res.status(statusCode)
+    .json(payload);
 };

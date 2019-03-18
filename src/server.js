@@ -1,23 +1,23 @@
 import "dotenv/config";
-import displayRequests from "./tools/morgan/displayRequests";
+import apiConsole from "./middleware/apiLoggerConsole";
+import apiLogger from "./middleware/apiLoggerFile";
 import errors from "./middleware/errorHandler";
-import { environment, isDebug, port } from "./config";
+import { environment, isDebug, isDev, port } from "./config";
 import express from "express";
 import helmet from "helmet";
 import MongoDBStore from "connect-mongodb-session";
 import morgan from "morgan";
 import passport from "passport";
 import routes from "./routes";
-import saveRequests from "./tools/morgan/saveRequests";
 import session from "express-session";
 
 const app = express();
 const SessionStore = MongoDBStore(session);
 
 if (isDebug()) {
-  app.use(morgan(displayRequests));
+  app.use(morgan(apiConsole));
 } else if (!isDev()) {
-  app.use(morgan(saveRequests));
+  app.use(morgan(apiLogger));
 }
 
 app.use(helmet());

@@ -1,4 +1,5 @@
-import auditLog from "../auditLog";
+import Logger from "../tools/fileLogger";
+const logger = Logger("api");
 
 export default (tokens, req, res) => {
   const body = req.body || {};
@@ -12,19 +13,12 @@ export default (tokens, req, res) => {
     return;
   }
 
-  if (body.password) {
-    body.password = "*****";
-  }
-
-  const buff = Buffer.from(JSON.stringify(body));
-  const base64data = buff.toString("base64");
-
-  auditLog("api", {
-    body: base64data,
+  logger.log({
+    body,
     code,
+    level: "info",
     method,
-    timestamp: new Date()
-      .toISOString(),
+    timestamp: new Date(),
     url,
     username,
   });

@@ -33,7 +33,7 @@ export default {
   },
 
   notAllowed: (req, res, next) => {
-    next(Boom.notFound());
+    next(Boom.notFound(`Not Found: ${req.url}`));
   },
 
   query: (req, res) => {

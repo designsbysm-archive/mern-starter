@@ -2,8 +2,6 @@ import Boom from "boom";
 import passport from "passport";
 import User from "../../../../models/User";
 
-require("../../../../middleware/passport");
-
 export default {
   login: (req, res, next) => {
     passport.authenticate("local", { session: false }, (err, data) => {
@@ -19,13 +17,15 @@ export default {
         return next(Boom.unauthorized());
       }
 
+      const { expires, token, username } = data;
+
+      // console.log(data);
+
       // auditLog("authentication", {
       //   action: "login",
       //   method: "basic",
       //   username: data.user.username,
       // });
-
-      const { expires, token } = data;
 
       res.json({
         expires,
@@ -40,12 +40,12 @@ export default {
         return next(err);
       }
 
-      // } else if (user) {
+      // console.log(user);
+
       // auditLog("authentication", {
       //   action: "logout",
       //   method: "",
       //   username: user.username,
-      // });
 
       // invalidate the current token
       User.findOneAndUpdate({ _id: user.id }, {})

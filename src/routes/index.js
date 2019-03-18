@@ -1,8 +1,8 @@
 import api from "./api";
 import express from "express";
 import path from "path";
+require("../middleware/passportStrategies");
 
-require("../middleware/passport");
 const router = express.Router();
 
 router.use("/api", api);

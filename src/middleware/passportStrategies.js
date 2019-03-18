@@ -107,6 +107,9 @@ passport.use(
             return done(err);
           }
 
+          // TODO: if user found, return db user
+          // TODO: if not, return saml data as an error
+          // TODO: move create user to /sessions
           const firstName = profile["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"] || "";
           const lastName = profile["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"] || "";
 

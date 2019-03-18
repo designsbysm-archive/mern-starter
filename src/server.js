@@ -1,4 +1,5 @@
 import "dotenv/config";
+// import "./install";
 import apiConsole from "./middleware/apiLoggerConsole";
 import apiLogger from "./middleware/apiLoggerFile";
 import errors from "./middleware/errorHandler";

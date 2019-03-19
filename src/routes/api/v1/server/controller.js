@@ -7,18 +7,24 @@ const read = (req, res, next) => {
       return next(err);
     }
 
-    const server = {
-      environment,
+    let server = {
       saml,
-      user: {
-        name: {
-          first: user.name.first,
-          last: user.name.last,
-        },
-        role: user.role,
-        username: user.username,
-      },
     };
+
+    if (user) {
+      server = {
+        environment,
+        saml,
+        user: {
+          name: {
+            first: user.name.first,
+            last: user.name.last,
+          },
+          role: user.role,
+          username: user.username,
+        },
+      };
+    }
 
     res.json(server);
   })(req, res, next);

@@ -2,7 +2,7 @@ import Logger from "../tools/fileLogger";
 const logger = Logger("api");
 
 export default (tokens, req, res) => {
-  const body = req.body || {};
+  // const body = req.body || {};
   const code = res.statusCode;
   const method = req.method;
   const url = req.originalUrl;
@@ -14,7 +14,7 @@ export default (tokens, req, res) => {
   }
 
   logger.log({
-    body,
+    // body,
     code,
     level: "info",
     method,

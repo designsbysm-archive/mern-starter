@@ -7,4 +7,4 @@ mongoose.connect(process.env.MONGO_CONNECTION, {
   useNewUrlParser: true,
 });
 
-module.exports = mongoose;
+export default mongoose;

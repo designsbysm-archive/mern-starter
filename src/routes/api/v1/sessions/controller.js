@@ -4,113 +4,113 @@ const logger = Logger("authentication");
 import passport from "passport";
 import User from "../../../../models/User";
 
-export default {
-  login: (req, res, next) => {
-    passport.authenticate("local", { session: false }, (err, data) => {
-      if (err) {
-        return next(err);
-      } else if (!data.token) {
-        logger.log({
-          action: "invalid",
-          level: "warn",
-          stratagy: "basic",
-          timestamp: new Date(),
-          username: req.body.username,
-        });
-
-        return next(Boom.unauthorized());
-      }
-
-      const { expires, token, user } = data;
-      const { username } = user;
-
+const login = (req, res, next) => {
+  passport.authenticate("local", { session: false }, (err, data) => {
+    if (err) {
+      return next(err);
+    } else if (!data.token) {
       logger.log({
-        action: "login",
-        level: "info",
+        action: "invalid",
+        level: "warn",
         stratagy: "basic",
         timestamp: new Date(),
-        username: username,
+        username: req.body.username,
       });
 
-      res.json({
-        expires,
-        token,
+      return next(Boom.unauthorized());
+    }
+
+    const { expires, token, user } = data;
+    const { username } = user;
+
+    logger.log({
+      action: "login",
+      level: "info",
+      stratagy: "basic",
+      timestamp: new Date(),
+      username: username,
+    });
+
+    res.json({
+      expires,
+      token,
+    });
+  })(req, res, next);
+};
+
+const logout = (req, res, next) => {
+  passport.authenticate("jwt", { session: false }, (err, user) => {
+    if (err) {
+      return next(err);
+    }
+
+    const { type, username } = user;
+
+    logger.log({
+      action: "logout",
+      level: "info",
+      stratagy: type,
+      timestamp: new Date(),
+      username: username,
+    });
+
+    // invalidate the current token
+    User.findOneAndUpdate({ _id: user.id }, {})
+      .catch(updateError => {
+        next(updateError);
       });
-    })(req, res, next);
-  },
 
-  logout: (req, res, next) => {
-    passport.authenticate("jwt", { session: false }, (err, user) => {
-      if (err) {
-        return next(err);
-      }
+    if (req.session) {
+      req.session.destroy();
+    }
 
-      const { type, username } = user;
+    res.sendStatus(200);
+  })(req, res, next);
+};
 
+const saml = () => {
+  passport.authenticate("saml", { session: false });
+};
+
+const samlResponse = (req, res, next) => {
+  passport.authenticate("saml", { session: false }, (err, data) => {
+    if (err) {
+      return next(err);
+    } else if (!data.token) {
       logger.log({
-        action: "logout",
-        level: "info",
-        stratagy: type,
-        timestamp: new Date(),
-        username: username,
-      });
-
-      // invalidate the current token
-      User.findOneAndUpdate({ _id: user.id }, {})
-        .catch(updateError => {
-          next(updateError);
-        });
-
-      if (req.session) {
-        req.session.destroy();
-      }
-
-      res.sendStatus(200);
-    })(req, res, next);
-  },
-
-  saml: () => {
-    passport.authenticate("saml", { session: false });
-  },
-
-  samlResponse: (req, res, next) => {
-    passport.authenticate("saml", { session: false }, (err, data) => {
-      if (err) {
-        return next(err);
-      } else if (!data.token) {
-        logger.log({
-          action: "invalid",
-          level: "warn",
-          stratagy: "saml",
-          timestamp: new Date(),
-          username: "unknown",
-        });
-
-        return next(Boom.unauthorized());
-      }
-
-      const { token, user } = data;
-      const { username } = user;
-
-      logger.log({
-        action: "login",
-        level: "info",
+        action: "invalid",
+        level: "warn",
         stratagy: "saml",
         timestamp: new Date(),
-        username: username,
+        username: "unknown",
       });
 
-      res.redirect(`/?token=${token}`);
-    })(req, res, next);
-  },
+      return next(Boom.unauthorized());
+    }
 
-  valid: (req, res, next) => {
-    passport.authenticate("jwt", { session: false }, err => {
-      if (err) {
-        return next(err);
-      }
+    const { token, user } = data;
+    const { username } = user;
 
-      res.sendStatus(200);
-    })(req, res, next);
-  },
+    logger.log({
+      action: "login",
+      level: "info",
+      stratagy: "saml",
+      timestamp: new Date(),
+      username: username,
+    });
+
+    res.redirect(`/?token=${token}`);
+  })(req, res, next);
 };
+
+const valid = (req, res, next) => {
+  passport.authenticate("jwt", { session: false }, err => {
+    if (err) {
+      return next(err);
+    }
+
+    res.sendStatus(200);
+  })(req, res, next);
+};
+
+export { login, logout, saml, samlResponse, valid };

@@ -1,18 +1,18 @@
 import "dotenv/config";
 import { secret } from "../config";
-import fs from "fs";
+// import fs from "fs";
 import Model from "../models/User";
 import passport from "passport";
 import passportLocal from "passport-local";
 import passportJWT from "passport-jwt";
-import passportSAML from "passport-saml";
-import path from "path";
+// import passportSAML from "passport-saml";
+// import path from "path";
 
-const certFile = path.resolve(process.env.SAML_CERT);
+// const certFile = path.resolve(process.env.SAML_CERT);
 const LocalStrategy = passportLocal.Strategy;
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
-const SamlStrategy = passportSAML.Strategy;
+// const SamlStrategy = passportSAML.Strategy;
 
 passport.use(
   new JWTStrategy(
@@ -78,79 +78,76 @@ passport.use(
   }),
 );
 
-passport.use(
-  new SamlStrategy(
-    {
-      callbackUrl: process.env.SAML_REDIRECT_URL,
-      cert: fs.readFileSync(certFile, "utf-8"),
-      entryPoint: `https://login.microsoftonline.com/${process.env.SAML_TENANT_ID}/saml2`,
-      issuer: process.env.SAML_APPLICATION_ID,
-      signatureAlgorithm: "sha256",
-    },
-    (profile, done) => {
-      Model.findOne({
-        type: "saml",
-        username: profile.nameID,
-      })
-        .collation({
-          locale: "en",
-          strength: 2,
-        })
-        .select("active")
-        .select("name")
-        .select("role")
-        .select("type")
-        .select("updatedAt")
-        .select("username")
-        .exec((err, user) => {
-          if (err) {
-            return done(err);
-          }
+// passport.use(
+//   new SamlStrategy(
+//     {
+//       callbackUrl: process.env.SAML_REDIRECT_URL,
+//       cert: fs.readFileSync(certFile, "utf-8"),
+//       entryPoint: `https://login.microsoftonline.com/${process.env.SAML_TENANT_ID}/saml2`,
+//       issuer: process.env.SAML_APPLICATION_ID,
+//       signatureAlgorithm: "sha256",
+//     },
+//     (profile, done) => {
+//       Model.findOne({
+//         type: "saml",
+//         username: profile.nameID,
+//       })
+//         .collation({
+//           locale: "en",
+//           strength: 2,
+//         })
+//         .select("active")
+//         .select("name")
+//         .select("role")
+//         .select("type")
+//         .select("updatedAt")
+//         .select("username")
+//         .exec((err, user) => {
+//           if (err) {
+//             return done(err);
+//           } else if (user) {
+//             const data = user.generateToken(secret);
+//             const { expires, token } = data;
 
-          // TODO: if user found, return db user
-          // TODO: if not, return saml data as an error
-          // TODO: move create user to /sessions
-          const firstName = profile["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"] || "";
-          const lastName = profile["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"] || "";
+//             return done(null, {
+//               expires,
+//               token,
+//               user: result,
+//             });
+//           }
 
-          if (!user) {
-            const upsertUser = new Model({
-              name: {
-                first: firstName,
-                last: lastName,
-              },
-              role: "tech",
-              type: "saml",
-              username: profile.nameID,
-            });
+//           const upsertUser = new Model({
+//             name: {
+//               first: profile["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"] || "",
+//               last: profile["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname"] || "",
+//             },
+//             role: "tech",
+//             type: "saml",
+//             username: profile.nameID,
+//           });
 
-            upsertUser
-              .save()
-              .then(doc => {
-                const result = new Model(doc);
-                const data = user.generateToken(secret);
-                const { expires, token } = data;
+//           upsertUser
+//             .save()
+//             .then(doc => {
+//               const result = new Model(doc);
+//               const data = user.generateToken(secret);
+//               const { expires, token } = data;
 
-                return done(null, {
-                  expires,
-                  token,
-                  user: result,
-                });
-              })
-              .catch(() => {
-                return done(null, false, {
-                  message: "unauthorized",
-                });
-              });
-          } else {
-            return done(null, false, {
-              message: "unauthorized",
-            });
-          }
-        });
-    },
-  ),
-);
+//               return done(null, {
+//                 expires,
+//                 token,
+//                 user: result,
+//               });
+//             })
+//             .catch(() => {
+//               return done(null, false, {
+//                 message: "unauthorized",
+//               });
+//             });
+//         });
+//     },
+//   ),
+// );
 
 passport.serializeUser((user, done) => {
   done(null, user);

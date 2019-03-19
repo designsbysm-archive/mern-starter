@@ -4,8 +4,8 @@ export default body => {
   const sort = body.sort || {};
 
   return {
-    find: find,
-    limit: limit,
-    sort: sort,
+    find,
+    limit,
+    sort,
   };
 };

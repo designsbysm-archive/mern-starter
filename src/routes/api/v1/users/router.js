@@ -1,5 +1,5 @@
-import controller from "./controller";
-import crudController from "../crud/controller";
+import { create, current, update } from "./controller";
+import { readAll, readOne } from "../crud/controller";
 import express from "express";
 import passport from "passport";
 import validateEmptyBody from "../../../../middleware/validateEmptyBody";
@@ -14,15 +14,15 @@ const addKind = (req, res, next) => {
 
 router
   .route("/")
-  .get(validateJWT, validateRole("admin"), addKind, crudController.readAll)
-  .post(validateJWT, validateRole("admin"), validateEmptyBody, controller.create);
+  .get(validateJWT, validateRole("admin"), addKind, readAll)
+  .post(validateJWT, validateRole("admin"), validateEmptyBody, create);
 
 router.route("/current")
-  .get(validateJWT, controller.current);
+  .get(validateJWT, current);
 
 router
   .route("/:id")
-  .get(validateJWT, validateRole("admin"), addKind, crudController.readOne)
-  .put(validateJWT, validateRole("admin"), validateEmptyBody, controller.update);
+  .get(validateJWT, validateRole("admin"), addKind, readOne)
+  .put(validateJWT, validateRole("admin"), validateEmptyBody, update);
 
 export default router;

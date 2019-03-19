@@ -1,5 +1,5 @@
 import express from "express";
-import controller from "./controller";
+import { create, deleteOne, query, readAll, readOne, update } from "./controller";
 import passport from "passport";
 import validateEmptyBody from "../../../../middleware/validateEmptyBody";
 import validateModel from "../../../../middleware/validateModel";
@@ -10,16 +10,16 @@ const validateJWT = passport.authenticate("jwt");
 
 router
   .route("/")
-  .get(validateJWT, validateModel("kind"), controller.readAll)
-  .post(validateJWT, validateRole("super"), validateModel("kind"), validateEmptyBody, controller.create);
+  .get(validateJWT, validateModel("kind"), readAll)
+  .post(validateJWT, validateRole("super"), validateModel("kind"), validateEmptyBody, create);
 
 router.route("/query")
-  .post(validateJWT, validateRole("super"), validateModel("kind"), controller.query);
+  .post(validateJWT, validateRole("super"), validateModel("kind"), query);
 
 router
   .route("/:id")
-  .delete(validateJWT, validateRole("admin"), validateModel("kind"), controller.deleteOne)
-  .get(validateJWT, validateModel("kind"), controller.readOne)
-  .put(validateJWT, validateRole("super"), validateModel("kind"), validateEmptyBody, controller.update);
+  .delete(validateJWT, validateRole("admin"), validateModel("kind"), deleteOne)
+  .get(validateJWT, validateModel("kind"), readOne)
+  .put(validateJWT, validateRole("super"), validateModel("kind"), validateEmptyBody, update);
 
 export default router;

@@ -1,4 +1,4 @@
-import { clearAppToken, getAppToken } from "../../../../tools/genrx-app";
+import { clearAppToken, getAppToken } from "../../../../tools/genrxApp";
 
 const appKey = "routingmatrix";
 

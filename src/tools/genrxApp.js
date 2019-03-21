@@ -3,25 +3,11 @@ import dotenv from "dotenv";
 import fetch from "node-fetch";
 import Model from "../models/Option";
 import path from "path";
-
-const updateMetadata = (key, data) => {
-  return Model.findOneAndUpdate(
-    { key: key },
-    {
-      metadata: data,
-    },
-    { upsert: true },
-  )
-    .catch(err => {
-      return Boom.boomify(err, {
-        statusCode: 400,
-      });
-    });
-};
+import { updateOption } from "../tools/options";
 
 const clearAppToken = async key => {
   const optionKey = `${key}Auth`;
-  const result = await updateMetadata(optionKey, {});
+  const result = await updateOption(optionKey, {});
 
   if (!result) {
     return Boom.badRequest(`${key}: unable to clear token`);
@@ -84,7 +70,7 @@ const getAppToken = async key => {
           });
         });
 
-      return updateMetadata(optionKey, loginResult)
+      return updateOption(optionKey, loginResult)
         .then(() => {
           return loginResult;
         });

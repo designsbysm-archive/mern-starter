@@ -1,12 +1,10 @@
 GET http://{{host}}:{{port}}/api/v1/users
 Authorization: Bearer {{token}}
-Content-Type: application/json
 
 ###
 
 GET http://{{host}}:{{port}}/api/v1/users/5c61d168089eb272f5f97527
 Authorization: Bearer {{token}}
-Content-Type: application/json
 
 ###
 
@@ -14,9 +12,8 @@ POST http://{{host}}:{{port}}/api/v1/users/query
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+{}
+
 ###
 GET http://{{host}}:{{port}}/api/v1/users/current
 Authorization: Bearer {{token}}
-Content-Type: application/json
-
-

@@ -1,20 +1,16 @@
 GET http://{{host}}:{{port}}/
-Content-Type: application/json
 
 ###
 
 GET http://{{host}}:{{port}}/static/js/main.b2a1a7a5.chunk.js
-Content-Type: application/json
 
 ### Invalid
 
 GET http://{{host}}:{{port}}/api/
-Content-Type: application/json
 
 ###
 
 GET http://{{host}}:{{port}}/api/v1
-Content-Type: application/json
 
 ###
 

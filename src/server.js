@@ -1,19 +1,19 @@
-import "dotenv/config";
 // import "./install";
+import "dotenv/config";
 import apiConsole from "./middleware/apiLoggerConsole";
 import apiLogger from "./middleware/apiLoggerFile";
 import errors from "./middleware/errorHandler";
 import { environment, isDebug, isDev, port } from "./config";
 import express from "express";
 import helmet from "helmet";
-import MongoDBStore from "connect-mongodb-session";
 import morgan from "morgan";
 import passport from "passport";
 import routes from "./routes";
 import session from "express-session";
+import memoryStore from "memorystore";
 
 const app = express();
-const SessionStore = MongoDBStore(session);
+const MemoryStore = memoryStore(session);
 
 if (isDebug()) {
   app.use(morgan(apiConsole));
@@ -27,11 +27,9 @@ app.use(
     resave: true,
     saveUninitialized: false,
     secret: process.env.SESSION_SECRET,
-    store: new SessionStore({
-      collection: "sessions",
-      uri: process.env.MONGO_CONNECTION,
+    store: new MemoryStore({
+      checkPeriod: 86400000,
     }),
-    unset: "destroy",
   }),
 );
 app.use(passport.initialize());

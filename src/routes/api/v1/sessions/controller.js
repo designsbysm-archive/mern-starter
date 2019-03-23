@@ -45,7 +45,7 @@ const logout = (req, res, next) => {
       return next(err);
     }
 
-    const { type, username } = user;
+    const { id, type, username } = user;
 
     logger.log({
       action: "logout",
@@ -56,7 +56,7 @@ const logout = (req, res, next) => {
     });
 
     // invalidate the current token
-    User.findOneAndUpdate({ _id: user.id }, {})
+    User.findOneAndUpdate({ _id: id }, {})
       .catch(updateError => {
         next(updateError);
       });

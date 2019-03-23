@@ -1,8 +1,9 @@
 import Boom from "boom";
 import Logger from "../../../../tools/fileLogger";
-const logger = Logger("authentication");
 import passport from "passport";
 import User from "../../../../models/User";
+
+const logger = Logger("authentication");
 
 const login = (req, res, next) => {
   passport.authenticate("local", { session: false }, (err, data) => {

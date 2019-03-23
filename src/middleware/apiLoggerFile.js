@@ -1,7 +1,13 @@
+const { isDev } = require("../config");
 import Logger from "../tools/fileLogger";
+
 const logger = Logger("api");
 
 export default (tokens, req, res) => {
+  if (!isDev) {
+    return;
+  }
+
   // const body = req.body || {};
   const code = res.statusCode;
   const method = req.method;

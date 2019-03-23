@@ -11,12 +11,6 @@ router.route("/login")
 router.route("/logout")
   .post(validateJWT, logout);
 
-// router.route("/saml")
-//   .get(controller.saml);
-
-// router.route("/saml/response")
-//   .post(controller.samlResponse);
-
 router.route("/valid")
   .post(validateJWT, valid);
 

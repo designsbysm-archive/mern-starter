@@ -10,15 +10,15 @@ const router = express.Router({ mergeParams: true });
 router
   .route("/")
   .get(validateJWT, validateModel("kind"), readAll)
-  .post(validateJWT, validateRole("super"), validateModel("kind"), validateEmptyBody, create);
+  .post(validateJWT, validateModel("kind"), validateRole("super"), validateEmptyBody, create);
 
 router.route("/query")
-  .post(validateJWT, validateRole("super"), validateModel("kind"), query);
+  .post(validateJWT, validateModel("kind"), validateRole("super"), query);
 
 router
   .route("/:id")
-  .delete(validateJWT, validateRole("admin"), validateModel("kind"), deleteOne)
+  .delete(validateJWT, validateModel("kind"), validateRole("admin"), deleteOne)
   .get(validateJWT, validateModel("kind"), readOne)
-  .put(validateJWT, validateRole("super"), validateModel("kind"), validateEmptyBody, update);
+  .put(validateJWT, validateModel("kind"), validateRole("super"), validateEmptyBody, update);
 
 export default router;

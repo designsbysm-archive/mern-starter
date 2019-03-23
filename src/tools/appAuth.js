@@ -24,6 +24,12 @@ const epochValidCheck = metadata => {
   return null;
 };
 
+const errorCatcher = error => {
+  return Boom.boomify(error, {
+    statusCode: 424,
+  });
+};
+
 const getAuthToken = async (key, expirationFN, loginFN) => {
   const optionKey = `${key}Auth`;
 
@@ -66,4 +72,4 @@ const getAuthToken = async (key, expirationFN, loginFN) => {
   return result;
 };
 
-export { clearAuthToken, epochValidCheck, getAuthToken };
+export { clearAuthToken, epochValidCheck, errorCatcher, getAuthToken };

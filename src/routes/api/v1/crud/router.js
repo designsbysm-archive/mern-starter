@@ -1,12 +1,11 @@
-import express from "express";
 import { create, deleteOne, query, readAll, readOne, update } from "./controller";
-import passport from "passport";
+import express from "express";
 import validateEmptyBody from "../../../../middleware/validateEmptyBody";
 import validateModel from "../../../../middleware/validateModel";
+import validateJWT from "../../../../middleware/validateJWT";
 import validateRole from "../../../../middleware/validateRole";
 
 const router = express.Router({ mergeParams: true });
-const validateJWT = passport.authenticate("jwt");
 
 router
   .route("/")

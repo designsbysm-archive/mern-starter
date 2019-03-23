@@ -1,9 +1,8 @@
 import { tokenClear, tokenGet } from "./controller";
 import express from "express";
-import passport from "passport";
+import validateJWT from "../../../../middleware/validateJWT";
 
 const router = express.Router();
-const validateJWT = passport.authenticate("jwt");
 
 router
   .route("/token")

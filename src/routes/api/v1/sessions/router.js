@@ -1,9 +1,8 @@
-import express from "express";
-import passport from "passport";
 import { login, logout, valid } from "./controller";
+import express from "express";
+import validateJWT from "../../../../middleware/validateJWT";
 
 const router = express.Router();
-const validateJWT = passport.authenticate("jwt");
 
 router.route("/login")
   .post(login);

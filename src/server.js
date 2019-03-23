@@ -1,3 +1,9 @@
+import fs from "fs";
+if (!fs.existsSync("./.env")) {
+  console.error("Error: .env config missing, exiting");
+  process.exit(1);
+}
+
 // import "./install";
 import "dotenv/config";
 import apiConsole from "./middleware/apiLoggerConsole";

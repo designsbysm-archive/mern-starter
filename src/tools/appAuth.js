@@ -13,6 +13,17 @@ const clearAuthToken = async key => {
   return true;
 };
 
+const epochValidCheck = metadata => {
+  const { expires } = metadata;
+  const timestamp = Math.floor(Date.now() / 1000);
+
+  if (timestamp < expires) {
+    return metadata;
+  }
+
+  return null;
+};
+
 const getAuthToken = async (key, expirationFN, loginFN) => {
   const optionKey = `${key}Auth`;
 
@@ -28,8 +39,8 @@ const getAuthToken = async (key, expirationFN, loginFN) => {
       if (!metadata) {
         return null;
       }
-      
-      return expirationFN( metadata)
+
+      return expirationFN(metadata);
     })
     .then(metadata => {
       if (metadata) {
@@ -55,4 +66,4 @@ const getAuthToken = async (key, expirationFN, loginFN) => {
   return result;
 };
 
-export { clearAuthToken, getAuthToken };
+export { clearAuthToken, epochValidCheck, getAuthToken };

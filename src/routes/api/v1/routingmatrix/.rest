@@ -1,7 +1,0 @@
-GET http://{{host}}:{{port}}/api/v1/routingmatrix/token
-Authorization: Bearer {{token}}
-
-###
-
-DELETE http://{{host}}:{{port}}/api/v1/routingmatrix/token
-Authorization: Bearer {{token}}

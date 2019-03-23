@@ -24,13 +24,19 @@ const getAuthToken = async (key, expirationFN, loginFN) => {
 
       return res.metadata;
     })
-    .then(metadata => expirationFN(key, metadata))
+    .then(metadata => {
+      if (!metadata) {
+        return null;
+      }
+      
+      return expirationFN( metadata)
+    })
     .then(metadata => {
       if (metadata) {
         return metadata;
       }
 
-      return loginFN(key, metadata);
+      return loginFN();
     })
     .then(async metadata => {
       if (metadata.isBoom) {

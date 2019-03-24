@@ -21,12 +21,8 @@ import memoryStore from "memorystore";
 const app = express();
 const MemoryStore = memoryStore(session);
 
-if (isDebug()) {
-  app.use(morgan(apiConsole));
-} else if (!isDev()) {
-  app.use(morgan(apiLogger));
-}
-
+app.use(morgan(apiConsole));
+app.use(morgan(apiLogger));
 app.use(helmet());
 app.use(
   session({

@@ -1,8 +1,17 @@
+import { isDebug, isDev } from "../config";
 import winston from "winston";
 require("winston-daily-rotate-file");
 
 export default type => {
-  const logger = winston.createLogger({
+  let logger = {
+    log: () => {},
+  };
+
+  if (!isDebug() && isDev()) {
+    return logger;
+  }
+
+  logger = winston.createLogger({
     transports: [
       new winston.transports.DailyRotateFile({
         dirname: `logs/${type}`,

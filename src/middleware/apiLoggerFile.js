@@ -1,10 +1,10 @@
-const { isDev } = require("../config");
+import { isDebug, isDev } from "../config";
 import Logger from "../tools/fileLogger";
 
 const logger = Logger("api");
 
 export default (tokens, req, res) => {
-  if (!isDev) {
+  if (!isDebug() && isDev()) {
     return;
   }
 

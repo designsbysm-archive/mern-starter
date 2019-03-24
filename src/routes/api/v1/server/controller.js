@@ -5,6 +5,8 @@ const read = (req, res, next) => {
   passport.authenticate("jwt", { session: false }, (err, user) => {
     if (err) {
       return next(err);
+    } else if (!req.user && user) {
+      req.user = user;
     }
 
     let server = {

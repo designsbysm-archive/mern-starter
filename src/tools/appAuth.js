@@ -24,11 +24,10 @@ const epochValidCheck = metadata => {
   return null;
 };
 
-const errorCatcher = error => {
-  return Boom.boomify(error, {
+const errorCatcher = error =>
+  Boom.boomify(error, {
     statusCode: 424,
   });
-};
 
 const getAuthToken = async (key, expirationFN, loginFN) => {
   const optionKey = `${key}Auth`;

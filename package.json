@@ -8,6 +8,7 @@
     "bcrypt": "^3.0.0",
     "bluebird": "^3.5.2",
     "boom": "^7.3.0",
+    "customize-cra": "^0.2.12",
     "date-fns": "^2.0.0-alpha.27",
     "dotenv": "^7.0.0",
     "express": "^4.16.3",
@@ -23,6 +24,7 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "react": "^16.8.4",
+    "react-app-rewired": "^2.1.1",
     "react-dom": "^16.8.4",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8",
@@ -37,11 +39,11 @@
     "stylelint-config-sass-guidelines": "^5.2.0"
   },
   "scripts": {
-    "client": "cd client && npm start",
-    "server": "nodemon --exec babel-node ./src/server.js",
+    "client": "react-app-rewired start",
+    "server": "nodemon --exec babel-node ./src/server",
     "build": "run-p build:*",
-    "build:client": "cd client && npm run build",
-    "build:server": "babel src -d build",
+    "build:client": "react-app-rewired build",
+    "build:server": "babel src/server -d build/server",
     "prebuild": "rm -rf build",
     "start": "run-p server client",
     "lint": "run-s lint:prettier lint:js lint:scss",
@@ -56,5 +58,14 @@
   },
   "nodemonConfig": {
     "delay": "500"
-  }
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

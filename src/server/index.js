@@ -9,7 +9,7 @@ import "dotenv/config";
 import apiConsole from "./middleware/apiLoggerConsole";
 import apiLogger from "./middleware/apiLoggerFile";
 import errors from "./middleware/errorHandler";
-import { environment, isDebug, isDev, port } from "./config";
+import { environment, port } from "./config";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";

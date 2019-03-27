@@ -2,7 +2,7 @@ import { isDebug } from "../config";
 import winston from "winston";
 
 export default (tokens, req, res) => {
-  if (!isDebug) {
+  if (!isDebug()) {
     return;
   }
 

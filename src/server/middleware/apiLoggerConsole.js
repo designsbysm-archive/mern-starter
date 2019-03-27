@@ -5,7 +5,7 @@ export default (tokens, req, res) => {
   if (!isDebug) {
     return;
   }
-  
+
   const code = res.statusCode;
   const method = req.method;
   const url = req.originalUrl;
@@ -22,6 +22,11 @@ export default (tokens, req, res) => {
             : code >= 200
               ? 34 // blue
               : 0; // no color
+
+    // only log api calls
+    if (!url.startsWith("/api/")) {
+      return;
+    }
 
     return `\x1b[${color}m${code}\x1b[0m ${method} ${url}`;
   });

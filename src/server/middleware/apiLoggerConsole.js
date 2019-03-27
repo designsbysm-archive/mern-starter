@@ -1,6 +1,11 @@
+import { isDebug } from "../config";
 import winston from "winston";
 
 export default (tokens, req, res) => {
+  if (!isDebug()) {
+    return;
+  }
+
   const code = res.statusCode;
   const method = req.method;
   const url = req.originalUrl;

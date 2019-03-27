@@ -9,7 +9,7 @@ import "dotenv/config";
 import apiConsole from "./middleware/apiLoggerConsole";
 import apiLogger from "./middleware/apiLoggerFile";
 import errors from "./middleware/errorHandler";
-import { environment, isDebug, port } from "./config";
+import { environment, port } from "./config";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -21,9 +21,7 @@ import memoryStore from "memorystore";
 const app = express();
 const MemoryStore = memoryStore(session);
 
-if (!isDebug()) {
-  app.use(morgan(apiConsole));
-}
+app.use(morgan(apiConsole));
 app.use(morgan(apiLogger));
 app.use(helmet());
 app.use(

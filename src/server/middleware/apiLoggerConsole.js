@@ -2,7 +2,7 @@ import { isDebug } from "../config";
 import winston from "winston";
 
 export default (tokens, req, res) => {
-  if (!isDebug()) {
+  if (!isDebug() || !req.originalUrl.startsWith("/api/")) {
     return;
   }
 
@@ -22,11 +22,6 @@ export default (tokens, req, res) => {
             : code >= 200
               ? 34 // blue
               : 0; // no color
-
-    // only log api calls
-    if (!url.startsWith("/api/")) {
-      return;
-    }
 
     return `\x1b[${color}m${code}\x1b[0m ${method} ${url}`;
   });

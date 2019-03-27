@@ -56,16 +56,17 @@
     "lint:client:prettier": "prettier --write './client/src/**/*'",
     "lint:client:scss": "stylelint --fix '.src/**/*.scss'"
   },
-  "nodemonConfig": {
-    "delay": "500"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "nodemonConfig": {
+    "delay": "500"
+  },
+  "proxy": "http://localhost:5000/"
 }

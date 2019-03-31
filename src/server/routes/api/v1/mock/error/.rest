@@ -1,0 +1,25 @@
+POST http://{{host}}:{{port}}/api/v1/mock/error/400
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+###
+
+POST http://{{host}}:{{port}}/api/v1/mock/error/json
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "test": 1
+}
+
+###
+
+POST http://{{host}}:{{port}}/api/v1/mock/error/text
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "message": "Test message"
+}

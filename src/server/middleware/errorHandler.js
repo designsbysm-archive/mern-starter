@@ -11,19 +11,28 @@ export default (err, req, res, next) => {
   } else {
     console.error(err);
 
-    boom = Boom.badRequest();
     if (err instanceof Error) {
       boom = Boom.boomify(err, {
+        statusCode: err.statusCode || 400,
+      });
+    } else if (typeof err === "string") {
+      boom = new Boom(err, {
         statusCode: 400,
       });
+    } else {
+      boom = new Boom(null, {
+        statusCode: 499,
+      });
+      boom.output.payload.error = err;
     }
   }
 
   const { statusCode, payload } = boom.output;
-  const { message } = payload;
+  const { error, message } = payload;
 
   logger.log({
     code: statusCode,
+    error,
     level: "error",
     message,
     timestamp: new Date(),

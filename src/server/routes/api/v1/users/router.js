@@ -1,12 +1,11 @@
 import { create, current, update } from "./controller";
 import { readAll, readOne } from "../crud/controller";
 import express from "express";
-import passport from "passport";
 import validateEmptyBody from "../../../../middleware/validateEmptyBody";
+import validateJWT from "../../../../middleware/validateJWT";
 import validateRole from "../../../../middleware/validateRole";
 
 const router = express.Router({ mergeParams: true });
-const validateJWT = passport.authenticate("jwt");
 const addKind = (req, res, next) => {
   req.params.kind = "users";
   next();

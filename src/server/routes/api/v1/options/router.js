@@ -1,10 +1,9 @@
 import express from "express";
 import { read, update } from "./controller";
-import passport from "passport";
 import validateEmptyBody from "../../../../middleware/validateEmptyBody";
+import validateJWT from "../../../../middleware/validateJWT";
 
 const router = express.Router({ mergeParams: true });
-const validateJWT = passport.authenticate("jwt");
 
 router
   .route("/:key")

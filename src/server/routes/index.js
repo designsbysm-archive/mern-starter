@@ -1,7 +1,9 @@
+import "../middleware/passport/jwt";
+import "../middleware/passport/local";
+import "../middleware/passport/setup";
 import api from "./api";
 import express from "express";
 import path from "path";
-require("../middleware/passportStrategies");
 
 const router = express.Router();
 

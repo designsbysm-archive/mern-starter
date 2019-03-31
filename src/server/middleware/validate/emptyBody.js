@@ -1,5 +1,5 @@
 import Boom from "boom";
-import isEmpty from "../tools/isEmpty";
+import isEmpty from "../../tools/isEmpty";
 
 export default (req, res, next) => {
   if (isEmpty(req.body)) {

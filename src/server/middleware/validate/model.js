@@ -1,5 +1,5 @@
 import Boom from "boom";
-import getModel from "../tools/getModel";
+import getModel from "../../tools/getModel";
 
 export default parameter => (req, res, next) => {
   const schema = req.params[parameter];

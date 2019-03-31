@@ -1,9 +1,9 @@
 import { create, current, update } from "./controller";
 import { readAll, readOne } from "../crud/controller";
 import express from "express";
-import validateEmptyBody from "../../../../middleware/validateEmptyBody";
-import validateJWT from "../../../../middleware/validateJWT";
-import validateRole from "../../../../middleware/validateRole";
+import validateEmptyBody from "../../../../middleware/validate/emptyBody";
+import validateJWT from "../../../../middleware/validate/jwt";
+import validateRole from "../../../../middleware/validate/role";
 
 const router = express.Router({ mergeParams: true });
 const addKind = (req, res, next) => {

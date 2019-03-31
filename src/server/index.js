@@ -6,13 +6,11 @@ if (!fs.existsSync("./.env")) {
 
 // import "./install";
 import "dotenv/config";
-import apiConsole from "./middleware/apiLoggerConsole";
-import apiLogger from "./middleware/apiLoggerFile";
+import apiLogger from "./middleware/apiLogger";
 import errors from "./middleware/errorHandler";
 import { environment, port } from "./config";
 import express from "express";
 import helmet from "helmet";
-import morgan from "morgan";
 import passport from "passport";
 import routes from "./routes";
 import session from "express-session";
@@ -21,9 +19,8 @@ import memoryStore from "memorystore";
 const app = express();
 const MemoryStore = memoryStore(session);
 
-app.use(morgan(apiConsole));
-app.use(morgan(apiLogger));
 app.use(helmet());
+app.use(apiLogger);
 app.use(
   session({
     resave: true,

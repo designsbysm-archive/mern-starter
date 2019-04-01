@@ -1,4 +1,3 @@
-import Model from "../../../../models/Option";
 import { readOption, updateOption } from "../../../../tools/options";
 
 const read = async (req, res, next) => {

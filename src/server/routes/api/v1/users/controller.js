@@ -29,8 +29,11 @@ const current = (req, res, next) => {
 
 const update = (req, res, next) => {
   const { id } = req.params;
-  const user = new User();
-  req.body.password = user.generatePasswordHash(req.body.password);
+
+  if (req.body.password) {
+    const user = new Model();
+    req.body.password = user.generatePasswordHash(req.body.password);
+  }
 
   User.findOneAndUpdate({ _id: id }, req.body, { new: true })
     .then(() => {

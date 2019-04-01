@@ -1,5 +1,6 @@
 import Boom from "boom";
 import Logger from "../tools/fileLogger";
+
 const logger = Logger("errors");
 
 // eslint-disable-next-line no-unused-vars

@@ -69,6 +69,41 @@ const logout = (req, res, next) => {
   })(req, res, next);
 };
 
+const saml = (req, res, next) => {
+  passport.authenticate("saml", { session: false })(req, res, next);
+};
+
+const samlResponse = (req, res, next) => {
+  passport.authenticate("saml", { session: false }, (err, data) => {
+    if (err) {
+      return next(err);
+    } else if (!data.token) {
+      logger.log({
+        action: "invalid",
+        level: "warn",
+        stratagy: "saml",
+        timestamp: new Date(),
+        username: "unknown",
+      });
+
+      return next(Boom.unauthorized());
+    }
+
+    const { token, user } = data;
+    const { username } = user;
+
+    logger.log({
+      action: "login",
+      level: "info",
+      stratagy: "saml",
+      timestamp: new Date(),
+      username: username,
+    });
+
+    res.redirect(`/?token=${token}`);
+  })(req, res, next);
+};
+
 const valid = (req, res, next) => {
   passport.authenticate("jwt", { session: false }, err => {
     if (err) {
@@ -79,4 +114,4 @@ const valid = (req, res, next) => {
   })(req, res, next);
 };
 
-export { login, logout, valid };
+export { login, logout, saml, samlResponse, valid };

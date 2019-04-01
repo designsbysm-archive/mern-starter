@@ -1,16 +1,76 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./styles/index.scss";
-import App from "./App";
+import App from "./components/App";
+// import { saveToken } from "./tools/http/appToken";
+import apiRequest from "./tools/http/apiRequest";
 
-fetch("/api/v1/server", {
-  headers: {
-    Authorization:
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODUxODE4NDQsImlkIjoiNWM2MWQxNjgwODllYjI3MmY1Zjk3NTI3IiwidXBkYXRlZCI6IjIwMTktMDMtMjFUMDY6MzA6NTYuNjY1WiIsImlhdCI6MTU1MzY0NTg0NH0.O5PXhUtd8eLb8BCgxR6z7GcuDY5x02oYUZ0_n780CPw",
+// TODO: error notify (via then), error catcher
+
+/* const options = {
+  body: {
+    password: "admin",
+    username: "admin",
   },
+  method: "POST",
+};
+
+apiRequest("/api/v1/sessions/login", options)
+  .then(res => {
+    saveToken(res.token);
+    console.log(res);
+  })
+  .catch(err => {}); */
+
+apiRequest("/api/v1/mock/error/text/400", {
+  body: {
+    message: "Some random error",
+  },
+  method: "POST",
 })
-  .then(res => res.json())
-  .then(res => console.info(res))
+  .then(res => console.log(res))
   .catch(err => console.error(err));
+
+// makeRequest("/api/v1/sessions/login", {
+//   body: [
+//     "a",
+//     "b",
+//     "c",
+//   ],
+// });
+// makeRequest("/api/v1/sessions/login", {
+//   body: "abc",
+// });
+// makeRequest("/api/v1/sessions/login", {
+//   body: 123,
+// });
+// makeRequest("/api/v1/sessions/login", {});
+
+// fetch("/api/v1/server", {
+//   headers: {
+//     Authorization: getAppToken(),
+//   },
+// })
+//   .then(res => res.json())
+//   .then(res => console.info(res))
+//   .catch(err => console.error(err));
+
+// fetch("/api/v1/sessions/login", {
+//   body: JSON.stringify({
+//     password: "admin",
+//     username: "admin",
+//   }),
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   method: "POST",
+// })
+//   .then(res => res.json())
+//   .then(res => {
+//     localStorage.setItem("appToken", res.token);
+
+//     console.info(res);
+//   })
+//   .catch(err => console.error(err));
 
 ReactDOM.render(<App />, document.getElementById("root"));

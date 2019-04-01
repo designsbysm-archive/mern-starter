@@ -1,9 +1,6 @@
 import { create, deleteOne, query, readAll, readOne, update } from "./controller";
 import express from "express";
-import validateEmptyBody from "../../../../middleware/validate/emptyBody";
-import validateModel from "../../../../middleware/validate/model";
-import validateJWT from "../../../../middleware/validate/jwt";
-import validateRole from "../../../../middleware/validate/role";
+import { validateEmptyBody, validateJWT, validateModel, validateRole } from "../../../../middleware/validate";
 
 const router = express.Router({ mergeParams: true });
 

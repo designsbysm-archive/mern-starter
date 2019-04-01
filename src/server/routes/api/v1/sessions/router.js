@@ -1,6 +1,6 @@
 import { login, logout, saml, samlResponse, valid } from "./controller";
 import express from "express";
-import validateJWT from "../../../../middleware/validate/jwt";
+import { validateJWT } from "../../../../middleware/validate";
 
 const router = express.Router();
 

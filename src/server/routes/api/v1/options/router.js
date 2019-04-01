@@ -1,7 +1,6 @@
 import express from "express";
 import { read, update } from "./controller";
-import validateEmptyBody from "../../../../middleware/validate/emptyBody";
-import validateJWT from "../../../../middleware/validate/jwt";
+import { validateEmptyBody, validateJWT } from "../../../../middleware/validate";
 
 const router = express.Router({ mergeParams: true });
 

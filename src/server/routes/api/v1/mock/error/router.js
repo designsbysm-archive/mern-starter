@@ -1,6 +1,6 @@
 import { boom, json, text } from "./controller";
 import express from "express";
-import validateJWT from "../../../../../middleware/validate/jwt";
+import { validateJWT } from "../../../../../middleware/validate";
 
 const router = express.Router({ mergeParams: true });
 

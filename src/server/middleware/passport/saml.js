@@ -1,19 +1,34 @@
+import "dotenv/config";
 import fs from "fs";
 import passport from "passport";
 import passportSAML from "passport-saml";
 import path from "path";
 
-export default ({ Model, saml, secret }) => {
-  const certFile = path.resolve(saml.certFile);
+if (
+  !process.env.SAML_APPLICATION_ID ||
+  !process.env.SAML_CERT ||
+  !process.env.SAML_REDIRECT_URL ||
+  !process.env.SAML_TENANT_ID
+) {
+  console.error("Error: .env missing saml config, exiting");
+  process.exit(1);
+}
+
+const applicationID = process.env.SAML_APPLICATION_ID;
+const callbackURL = process.env.SAML_REDIRECT_URL;
+const certFile = path.resolve(process.env.SAML_CERT);
+const entryPoint = `https://login.microsoftonline.com/${process.env.SAML_TENANT_ID}/saml2`;
+
+export default ({ Model, secret }) => {
   const SamlStrategy = passportSAML.Strategy;
 
   passport.use(
     new SamlStrategy(
       {
-        callbackUrl: saml.callbackURL,
+        callbackUrl: callbackURL,
         cert: fs.readFileSync(certFile, "utf-8"),
-        entryPoint: `https://login.microsoftonline.com/${saml.entryPoint}/saml2`,
-        issuer: saml.applicationID,
+        entryPoint: entryPoint,
+        issuer: applicationID,
         signatureAlgorithm: "sha256",
       },
       (profile, done) => {

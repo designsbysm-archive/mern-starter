@@ -1,5 +1,5 @@
 import { passportJWT, passportLocal, passportSaml, passportSetup } from "../middleware/passport";
-import { secret, saml } from "../config";
+import { secret } from "../config";
 import api from "./api";
 import express from "express";
 import Model from "../models/User";
@@ -8,7 +8,7 @@ import path from "path";
 passportSetup();
 passportJWT({ Model, secret });
 passportLocal({ Model, secret });
-passportSaml({ Model, saml, secret });
+passportSaml({ Model, secret });
 const router = express.Router();
 
 router.use("/api", api);

@@ -1,7 +1,7 @@
 import Boom from "boom";
 import getModel from "../../../../tools/getModel";
 import jsonStream from "JSONStream";
-import parseQueryFind from "../../../../tools/parseQueryFind";
+import parseFindQuery from "../../../../tools/parseFindQuery";
 
 const create = (req, res, next) => {
   const { kind } = req.params;
@@ -38,7 +38,7 @@ const notAllowed = (req, res, next) => {
 const query = (req, res) => {
   const { kind } = req.params;
   const Model = getModel(kind);
-  const { find, limit, sort } = parseQueryFind(req.body);
+  const { find, limit, sort } = parseFindQuery(req.body);
 
   res.type("json");
   Model.find(find)

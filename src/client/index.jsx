@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./styles/index.scss";
-import App from "./components/App";
+import App from "./components/app";
 // import { saveToken } from "./tools/http/appToken";
 import apiRequest from "./tools/http/apiRequest";
 

@@ -27,8 +27,6 @@ const conditionOptions = options => {
     };
   }
 
-  console.log(updates);
-
   return updates;
 };
 

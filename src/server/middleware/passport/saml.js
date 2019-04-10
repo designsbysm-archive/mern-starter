@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { missingConfig } from "../../tools/messages";
 import fs from "fs";
 import passport from "passport";
 import passportSAML from "passport-saml";
@@ -10,7 +11,7 @@ if (
   !process.env.SAML_REDIRECT_URL ||
   !process.env.SAML_TENANT_ID
 ) {
-  console.error("Error: .env missing saml config, exiting");
+  console.error(missingConfig);
   process.exit(1);
 }
 

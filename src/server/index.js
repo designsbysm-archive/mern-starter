@@ -1,8 +1,7 @@
 // import "./install";
-import "dotenv/config";
 import apiLogger from "./middleware/apiLogger";
 import errors from "./middleware/errorHandler";
-import { environment, port } from "./config";
+import { environment, port, secretSession } from "./config";
 import express from "express";
 import helmet from "helmet";
 import passport from "passport";
@@ -19,7 +18,7 @@ app.use(
   session({
     resave: true,
     saveUninitialized: false,
-    secret: process.env.SESSION_SECRET,
+    secret: secretSession,
     store: new MemoryStore({
       checkPeriod: 86400000,
     }),

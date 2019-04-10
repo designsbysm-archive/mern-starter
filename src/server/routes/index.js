@@ -1,14 +1,14 @@
 import { passportJWT, passportLocal, passportSaml, passportSetup } from "../middleware/passport";
-import { secret } from "../config";
+import { secretBcrypt } from "../config";
 import api from "./api";
 import express from "express";
 import Model from "../models/User";
 import path from "path";
 
 passportSetup();
-passportJWT({ Model, secret });
-passportLocal({ Model, secret });
-passportSaml({ Model, secret });
+passportJWT({ Model, secret: secretBcrypt });
+passportLocal({ Model, secret: secretBcrypt });
+passportSaml({ Model, secret: secretBcrypt });
 const router = express.Router();
 
 router.use("/api", api);

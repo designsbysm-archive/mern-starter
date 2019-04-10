@@ -1,5 +1,5 @@
 import User from "../../../../models/User";
-import { secret } from "../../../../config";
+import { secretBcrypt } from "../../../../config";
 
 const create = (req, res, next) => {
   const user = new User(req.body);
@@ -16,7 +16,7 @@ const create = (req, res, next) => {
 
 const current = (req, res, next) => {
   const user = new User();
-  const token = user.decodeToken(req.headers.authorization, secret);
+  const token = user.decodeToken(req.headers.authorization, secretBcrypt);
 
   User.findOne({ _id: token.id }, (err, doc) => {
     if (err) {

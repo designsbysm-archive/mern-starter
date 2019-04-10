@@ -1,9 +1,10 @@
 import "dotenv/config";
+import { missingConfig } from "./tools/messages";
 import bluebird from "bluebird";
 import mongoose from "mongoose";
 
 if (!process.env.MONGO_CONNECTION) {
-  console.error("Error: .env missing mongo config, exiting");
+  console.error(missingConfig);
   process.exit(1);
 }
 

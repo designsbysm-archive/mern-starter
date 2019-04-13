@@ -1,6 +1,6 @@
 import { getToken } from "./appToken";
 
-const conditionOptions = options => {
+const conditionOptions = (options = {}) => {
   const { body, headers } = options;
   const updates = { ...options };
 
@@ -29,6 +29,8 @@ const conditionOptions = options => {
 
   return updates;
 };
+
+// TODO: make .post, .get, or etc functions?
 
 // export default (url, options) => {
 export default (url, options) => {

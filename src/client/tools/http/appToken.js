@@ -1,11 +1,15 @@
 const tokenKey = "appToken";
 
-const getToken = () => {
+const get = () => {
   return localStorage.getItem(tokenKey);
 };
 
-const saveToken = token => {
+const remove = () => {
+  return localStorage.removeItem(tokenKey);
+};
+
+const save = token => {
   localStorage.setItem(tokenKey, token);
 };
 
-export { getToken, saveToken };
+export { get as getToken, remove as removeToken, save as saveToken };

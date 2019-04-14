@@ -1,6 +1,6 @@
-import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { removeToken } from "../tools/http/appToken";
+import { removeToken } from "../tools/appToken";
+import React from "react";
 
 //components
 

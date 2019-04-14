@@ -1,5 +1,5 @@
 import { apiRequest, errorHandler } from "../tools/http";
-import { saveToken } from "../tools/http/appToken";
+import { saveToken } from "../tools/appToken";
 import React from "react";
 
 const Page = ({ loginCB }) => {

@@ -1,4 +1,4 @@
-import { getToken } from "./appToken";
+import { getToken } from "../appToken";
 
 const conditionOptions = (options = {}) => {
   const { body, headers } = options;

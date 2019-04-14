@@ -1,7 +1,7 @@
 import { apiRequest, errorHandler } from "../tools/http";
-import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
+import { getToken, removeToken } from "../tools/appToken";
 import React, { useEffect, useState } from "react";
-import { getToken, removeToken } from "../tools/http/appToken";
+import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
 
 // components
 import { Footer, Header } from "./index";

@@ -5,7 +5,7 @@ const get = () => {
 };
 
 const remove = () => {
-  return localStorage.removeItem(tokenKey);
+  localStorage.removeItem(tokenKey);
 };
 
 const save = token => {

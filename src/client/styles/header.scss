@@ -1,0 +1,22 @@
+@import "colors";
+
+.container > header {
+  background: $color--branding-primary;
+  color: $color--header-text;
+  display: flex;
+  padding: 0 1em;
+
+  .logo {
+    height: 60px;
+
+    img {
+      height: 100%;
+    }
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+}

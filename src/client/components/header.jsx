@@ -2,29 +2,25 @@ import { Link, NavLink } from "react-router-dom";
 import { removeToken } from "../tools/appToken";
 import React from "react";
 
-//components
-
 //assets
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faAngleDown } from "@fortawesome/pro-regular-svg-icons";
+import "../styles/header.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignOut } from "@fortawesome/pro-regular-svg-icons";
+import { faUser, faAngleDown } from "@fortawesome/pro-solid-svg-icons";
 import logo from "../images/logo.svg";
 
 const getGreeting = user => {
-  let greeting = "Welcome";
-
-  if (user) {
-    const { name, username } = user;
-
-    if (name) {
-      greeting += ` ${name.first} ${name.last}`;
-    } else if (username) {
-      greeting += ` ${username}`;
-    }
+  if (!user) {
+    return "Unknown";
   }
 
-  greeting += "!";
+  const { name, username } = user;
 
-  return greeting;
+  if (name) {
+    return ` ${name.first} ${name.last}`;
+  } else if (username) {
+    return ` ${username}`;
+  }
 };
 
 // class Dropdown extends React.Component {
@@ -95,55 +91,71 @@ const getGreeting = user => {
 //   }
 // }
 
+const generateMenu = menu =>
+  menu.map(route => {
+    if (route.hidden) {
+      return null;
+    }
+
+    return NavItem(route);
+  });
+
 const Logo = ({ image }) => (
-  <Link to="/">
-    <img className="logo" src={image} alt="SM Logo" />
+  <Link to="/" className="logo">
+    <img src={image} alt="SM Logo" />
   </Link>
 );
 
-const Nav = ({ logoutCB, routes }) => (
+const LogoutItem = logoutCB => {
+  return (
+    <div key={"admin/logout"}>
+      <span
+        className="link"
+        onClick={() => {
+          removeToken();
+          logoutCB();
+        }}
+      >
+        <FontAwesomeIcon className="icon" icon={faSignOut} />
+        Logout
+      </span>
+    </div>
+  );
+};
+
+const UserItem = user => {
+  return (
+    <div key={"admin/user"}>
+      <span className="link">
+        <FontAwesomeIcon className="icon" icon={faUser} />
+        {getGreeting(user)}
+        <FontAwesomeIcon className="caret" icon={faAngleDown} />
+      </span>
+    </div>
+  );
+};
+
+const NavItem = route => {
+  return (
+    <div key={route.title + route.url}>
+      <NavLink exact activeClassName="current" key={route.url} to={route.url}>
+        {route.icon ? <FontAwesomeIcon className="icon" icon={route.icon} /> : null}
+        {route.title}
+      </NavLink>
+    </div>
+  );
+};
+
+const Nav = ({ logoutCB, routes, user }) => (
   <nav>
-    <ul key="main" className="main">
-      {routes.main.map(route => {
-        if (route.hidden) {
-          return null;
-        }
-
-        return (
-          <li key={"main" + route.url}>
-            <NavLink exact activeClassName="current" key={route.url} to={route.url}>
-              {route.title}
-            </NavLink>
-          </li>
-        );
-      })}
-    </ul>
-    <ul key="admin" className="admin">
-      {routes.admin.map(route => {
-        if (route.hidden) {
-          return null;
-        }
-
-        return (
-          <li key={"admin" + route.url}>
-            <NavLink exact activeClassName="current" key={route.url} to={route.url}>
-              {route.title}
-            </NavLink>
-          </li>
-        );
-      })}
-
-      <li key={"admin/logout"}>
-        <span
-          onClick={() => {
-            removeToken();
-            logoutCB();
-          }}
-        >
-          Logout
-        </span>
-      </li>
-    </ul>
+    <div key="main" className="menu main">
+      {generateMenu(routes.main)}
+    </div>
+    <div key="admin" className="menu admin">
+      {UserItem(user)}
+      {generateMenu(routes.admin)}
+      {LogoutItem(logoutCB)}
+    </div>
   </nav>
 );
 
@@ -152,9 +164,8 @@ const Header = ({ config, logoutCB, routes }) => {
 
   return (
     <header>
-      <p>{user ? getGreeting(user) : "Please login"}</p>
       <Logo image={logo} />
-      {user ? <Nav logoutCB={logoutCB} routes={routes} /> : null}
+      {user ? <Nav logoutCB={logoutCB} routes={routes} user={user} /> : null}
     </header>
   );
 };

@@ -1,7 +1,13 @@
 body {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
+}
+
+.contents {
+  margin: 2em 0;
+  padding: 0 1em;
 }

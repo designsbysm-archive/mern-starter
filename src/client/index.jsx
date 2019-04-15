@@ -7,28 +7,35 @@ import { HomePage } from "./pages";
 
 // assets
 import "./styles/index.scss";
+import { faAmbulance, faAtom } from "@fortawesome/pro-regular-svg-icons";
 
 const routes = {
-  admin: [],
+  admin: [
+    {
+      component: HomePage,
+      icon: faAmbulance,
+      // role: "",
+      title: "Page Four",
+      url: "/page4",
+    },
+  ],
   main: [
     {
       component: HomePage,
-      icon: "",
+      icon: faAmbulance,
       // role: "",
       title: "Page One",
       url: "/page1",
     },
     {
       component: HomePage,
-      icon: "",
+      icon: faAtom,
       // role: "",
       title: "Page Two",
       url: "/page2",
     },
     {
       component: HomePage,
-      icon: "",
-      // role: "",
       title: "Page Three",
       url: "/page3",
     },

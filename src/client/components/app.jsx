@@ -91,7 +91,7 @@ const App = ({ routes }) => {
             }}
           />
         </Switch>
-        <Footer title={`[${packageJson.app.initials}] ${packageJson.app.title}`} version={packageJson.version} />
+        <Footer title={`${packageJson.app.title}`} version={packageJson.version} />
       </>
     </Router>
   );

@@ -1,0 +1,32 @@
+@import "colors";
+@import "mixins";
+
+.container > footer {
+  background: $color--branding-primary;
+  color: $color--footer-text;
+  min-height: 50px;
+  padding: 0 1em;
+  @include align-vertical;
+  @include font-size(0.75);
+}
+
+// sticky footer
+html,
+body,
+.container {
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.contents {
+  flex: 1 0 auto;
+}
+
+.footer {
+  flex-shrink: 0;
+}
+// sticky footer

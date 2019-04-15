@@ -12,7 +12,7 @@ const Page = ({ loginCB }) => {
   };
 
   return (
-    <main className="page">
+    <main className="contents">
       <button
         onClick={() =>
           apiRequest("/api/v1/sessions/login", options)

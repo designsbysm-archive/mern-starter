@@ -1,0 +1,40 @@
+@import "../colors";
+@import "../mixins";
+
+.form {
+  .group {
+    margin-bottom: 2em;
+
+    label {
+      display: inline-block;
+      font-weight: 700;
+      margin-bottom: 5px;
+      max-width: 100%;
+      text-transform: uppercase;
+      @include font-size(0.75);
+    }
+
+    input {
+      border: 1px solid #ccc;
+      border-radius: 0.25em;
+      padding: 1em;
+      width: calc(100% - 2em - 2px);
+      @include font-size(1);
+    }
+  }
+
+  button {
+    background-color: $color--branding-primary;
+    border-radius: 0.25em;
+    color: #fff;
+    cursor: pointer;
+    padding: 1em 2em;
+    text-transform: uppercase;
+    @include font-size(1);
+    @include animate-property(background-color);
+
+    &:hover {
+      background-color: $color--branding-primary-hover;
+    }
+  }
+}

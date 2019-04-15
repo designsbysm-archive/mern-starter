@@ -3,7 +3,7 @@ import { removeToken } from "../tools/appToken";
 import React from "react";
 
 //assets
-import "../styles/header.scss";
+import "../styles/components/header.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOut } from "@fortawesome/pro-regular-svg-icons";
 import { faUser, faAngleDown } from "@fortawesome/pro-solid-svg-icons";

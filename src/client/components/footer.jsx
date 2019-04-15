@@ -1,7 +1,7 @@
 import React from "react";
 
 //assets
-import "../styles/footer.scss";
+import "../styles/components/footer.scss";
 
 const Footer = ({ title, version }) => {
   return (

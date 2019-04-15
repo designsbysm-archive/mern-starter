@@ -3,6 +3,14 @@
   display: flex;
 }
 
+@mixin animate-property(
+  $property,
+  $duration: 0.3s,
+  $mode: ease-in-out
+) {
+  transition: $property $duration $mode;
+}
+
 //rem output with px fallback
 @mixin font-size($size_value: 1) {
   font-size: ($size_value * 16) * 1px;

@@ -1,6 +1,7 @@
 /* stylelint-disable color-no-hex */
 
 $color--branding-primary: #ef3829;
+$color--branding-primary-hover: darken($color--branding-primary, 15%);
 
 $color--header-text: #fff;
 

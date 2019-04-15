@@ -1,4 +1,5 @@
 @import "../colors";
+@import "../mixins";
 
 .container > header {
   background: $color--branding-primary;
@@ -9,6 +10,7 @@
 
   .logo {
     height: 50px;
+    margin-right: 1em;
 
     img {
       height: 100%;
@@ -19,5 +21,36 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+
+    .menu {
+      display: flex;
+
+      .menu-item {
+        height: 100%;
+        padding: 0 1em;
+        @include animate-property(background-color);
+
+        a,
+        .link {
+          color: $color--header-text;
+          cursor: pointer;
+          height: 100%;
+          text-decoration: none;
+          @include align-vertical;
+
+          .caret {
+            margin-left: 0.5em;
+          }
+
+          .icon {
+            margin-right: 1em;
+          }
+        }
+
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.2);
+        }
+      }
+    }
   }
 }

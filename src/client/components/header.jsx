@@ -6,7 +6,7 @@ import React from "react";
 import "../styles/components/header.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignOut } from "@fortawesome/pro-regular-svg-icons";
-import { faUser, faAngleDown } from "@fortawesome/pro-solid-svg-icons";
+import { faUser, faCaretDown } from "@fortawesome/pro-solid-svg-icons";
 import logo from "../images/logo.svg";
 
 const getGreeting = user => {
@@ -17,9 +17,9 @@ const getGreeting = user => {
   const { name, username } = user;
 
   if (name) {
-    return ` ${name.first} ${name.last}`;
+    return `${name.first} ${name.last}`;
   } else if (username) {
-    return ` ${username}`;
+    return username;
   }
 };
 
@@ -108,7 +108,7 @@ const Logo = ({ image }) => (
 
 const LogoutItem = logoutCB => {
   return (
-    <div key={"admin/logout"}>
+    <div className="menu-item" key={"admin/logout"}>
       <span
         className="link"
         onClick={() => {
@@ -116,7 +116,7 @@ const LogoutItem = logoutCB => {
           logoutCB();
         }}
       >
-        <FontAwesomeIcon className="icon" icon={faSignOut} />
+        <FontAwesomeIcon className="icon" icon={faSignOut} fixedWidth />
         Logout
       </span>
     </div>
@@ -125,11 +125,11 @@ const LogoutItem = logoutCB => {
 
 const UserItem = user => {
   return (
-    <div key={"admin/user"}>
+    <div className="menu-item" key={"admin/user"}>
       <span className="link">
-        <FontAwesomeIcon className="icon" icon={faUser} />
+        <FontAwesomeIcon className="icon" icon={faUser} fixedWidth />
         {getGreeting(user)}
-        <FontAwesomeIcon className="caret" icon={faAngleDown} />
+        <FontAwesomeIcon className="caret" icon={faCaretDown} />
       </span>
     </div>
   );
@@ -137,9 +137,9 @@ const UserItem = user => {
 
 const NavItem = route => {
   return (
-    <div key={route.title + route.url}>
+    <div className="menu-item" key={route.title + route.url}>
       <NavLink exact activeClassName="current" key={route.url} to={route.url}>
-        {route.icon ? <FontAwesomeIcon className="icon" icon={route.icon} /> : null}
+        {route.icon ? <FontAwesomeIcon className="icon" icon={route.icon} fixedWidth /> : null}
         {route.title}
       </NavLink>
     </div>

@@ -31,7 +31,7 @@ const update = (req, res, next) => {
   const { id } = req.params;
 
   if (req.body.password) {
-    const user = new Model();
+    const user = new User();
     req.body.password = user.generatePasswordHash(req.body.password);
   }
 

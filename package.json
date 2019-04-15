@@ -53,6 +53,9 @@
   },
   "scripts": {
     "client": "react-app-rewired start",
+    "db:backup": "dbTools --mongo --backup --db mockServer",
+    "db:restore": "dbTools --mongo --restore --db mockServer",
+    "db:grab:prod": "dbTools --mongo --transfer --db mockServer --source prod --target local",
     "server": "nodemon --exec babel-node ./src/server",
     "build": "run-p build:*",
     "build:client": "react-app-rewired build",

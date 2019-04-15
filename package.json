@@ -41,7 +41,6 @@
   },
   "devDependencies": {
     "@babel/node": "^7.2.2",
-    "eslint": "5.12.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "nodemon": "^1.18.11",
     "prettier": "^1.17.0",

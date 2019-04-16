@@ -2,18 +2,17 @@
 @import "../mixins";
 
 .login.contents {
+  grid-template-areas: ". form .";
+  grid-template-columns: 0 auto 0;
   margin: 4em 2em 2em;
 
-  @media only screen and (min-width: 500px) {
+  @media only screen and (min-width: 468px) {
     grid-template-columns: auto 400px auto;
   }
 }
 
 .form {
-  @media only screen and (min-width: 500px) {
-    grid-column-end: span 1;
-    grid-column-start: 2;
-  }
+  grid-area: form;
 
   .group {
     margin-bottom: 2em;

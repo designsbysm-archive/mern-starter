@@ -7,7 +7,7 @@ import { HomePage } from "./pages";
 
 // assets
 import "./styles/index.scss";
-import { faAmbulance, faAtom } from "@fortawesome/pro-regular-svg-icons";
+// import { faAmbulance, faAtom } from "@fortawesome/pro-regular-svg-icons";
 
 const routes = {
   admin: [],

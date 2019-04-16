@@ -18,7 +18,7 @@ const Page = ({ loginCB }) => {
   ] = useState({});
 
   return (
-    <main className="contents">
+    <main className="contents login">
       <div className="form">
         <div className="group">
           <label htmlFor="username">Username</label>

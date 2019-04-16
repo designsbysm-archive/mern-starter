@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { removeToken } from "../tools/appToken";
-import React from "react";
+import React, { useState } from "react";
 
 //assets
 import "../styles/components/header.scss";
@@ -17,87 +17,54 @@ const getGreeting = user => {
   const { name, username } = user;
 
   if (name) {
-    return `${name.first} ${name.last}`;
+    return name.first;
   } else if (username) {
     return username;
   }
 };
 
-// class Dropdown extends React.Component {
-//   state = {
-//     dropdownVisible: false,
-//   };
+const Dropdown = (base, route) => {
+  const [
+    visible,
+    setVisible, 
+  ] = useState(false);
 
-//   getSubItems = (methods, group, hideMenu) => {
-//     return methods
-//       .filter(method => method.group === group)
-//       .map(method => (
-//         <li className="nav-subitem" key={method.key} onClick={hideMenu}>
-//           <Link to={method.key}>{method.name}</Link>
-//         </li>
-//       ));
-//   };
+  return (
+    <div
+      key={route.title}
+      className="menu-item"
+      onClick={() => {
+        setVisible(!visible);
+      }}
+      onMouseEnter={() => {
+        setVisible(true);
+      }}
+      onMouseLeave={() => {
+        setVisible(false);
+      }}
+    >
+      <span className="link">
+        {route.icon ? <FontAwesomeIcon className="icon" icon={route.icon} fixedWidth /> : null}
+        {route.title}
+        <FontAwesomeIcon className="caret" icon={faCaretDown} />
+      </span>
+      <div className={`dropdown ${visible ? "show" : "hide"}`}>{generateMenu(route.url, route.children)}</div>
+    </div>
+  );
+};
 
-//   handleMenuHide = () => {
-//     this.setState(() => {
-//       return {
-//         dropdownVisible: false,
-//       };
-//     });
-//   };
-
-//   handleMenuShow = () => {
-//     this.setState(() => {
-//       return {
-//         dropdownVisible: true,
-//       };
-//     });
-//   };
-
-//   handleMenuToggle = () => {
-//     this.setState(state => {
-//       return {
-//         dropdownVisible: !state.dropdownVisible,
-//       };
-//     });
-//   };
-
-//   render() {
-//     return (
-//       <div
-//         className="nav-item"
-//         onClick={this.handleMenuToggle}
-//         onMouseEnter={this.handleMenuShow}
-//         onMouseLeave={this.handleMenuHide}
-//       >
-//         <div className="title">
-//           {this.props.title}
-//           <FontAwesomeIcon icon={faAngleDown} />
-//         </div>
-//         <ul className={`dropdown ${this.state.dropdownVisible ? "show" : "hide"}`}>
-//           {[
-//             "2x2",
-//             "3x3",
-//             "Other",
-//           ].map(group => [
-//             <li className="nav-subitem group" key={group}>
-//               {group}
-//             </li>,
-//             this.getSubItems(this.props.methods, group, this.handleMenuHide),
-//           ])}
-//         </ul>
-//       </div>
-//     );
-//   }
-// }
-
-const generateMenu = menu =>
+const generateMenu = (base, menu) =>
   menu.map(route => {
     if (route.hidden) {
       return null;
     }
 
-    return NavItem(route);
+    const hasChildren = route.children && route.children.length > 0;
+    if (hasChildren) {
+      return Dropdown(base, route);
+    } else {
+      return MenuItem(base, route);
+    }
   });
 
 const Logo = ({ image }) => (
@@ -106,58 +73,69 @@ const Logo = ({ image }) => (
   </Link>
 );
 
-const LogoutItem = logoutCB => {
-  return (
-    <div className="menu-item" key={"admin/logout"}>
-      <span
-        className="link"
-        onClick={() => {
-          removeToken();
-          logoutCB();
-        }}
-      >
-        <FontAwesomeIcon className="icon" icon={faSignOut} fixedWidth />
-        Logout
-      </span>
-    </div>
-  );
-};
+const MenuItem = (base, route) => {
+  const path = base + route.url;
 
-const UserItem = user => {
-  return (
-    <div className="menu-item" key={"admin/user"}>
-      <span className="link">
-        <FontAwesomeIcon className="icon" icon={faUser} fixedWidth />
-        {getGreeting(user)}
-        <FontAwesomeIcon className="caret" icon={faCaretDown} />
-      </span>
-    </div>
-  );
-};
-
-const NavItem = route => {
-  return (
+  return route.title === "seperator" ? (
+    <div className="seperator" key={"seperator" + Math.random()} />
+  ) : (
     <div className="menu-item" key={route.title + route.url}>
-      <NavLink exact activeClassName="current" key={route.url} to={route.url}>
-        {route.icon ? <FontAwesomeIcon className="icon" icon={route.icon} fixedWidth /> : null}
-        {route.title}
-      </NavLink>
+      {route.onClick ? (
+        <div className="menu-item">
+          <span className="link" onClick={route.onClick}>
+            {route.icon ? <FontAwesomeIcon className="icon" icon={route.icon} fixedWidth /> : null}
+            Logout
+          </span>
+        </div>
+      ) : (
+        <NavLink exact activeClassName="current" key={route.url} to={path}>
+          {route.icon ? <FontAwesomeIcon className="icon" icon={route.icon} fixedWidth /> : null}
+          {route.title}
+        </NavLink>
+      )}
     </div>
   );
 };
 
-const Nav = ({ logoutCB, routes, user }) => (
-  <nav>
-    <div key="main" className="menu main">
-      {generateMenu(routes.main)}
-    </div>
-    <div key="admin" className="menu admin">
-      {UserItem(user)}
-      {generateMenu(routes.admin)}
-      {LogoutItem(logoutCB)}
-    </div>
-  </nav>
-);
+const Nav = ({ logoutCB, routes, user }) => {
+  const { admin, main } = routes;
+
+  const hasLogout = admin
+    .filter(item => item.title === "Logout")
+    .reduce(() => {
+      return true;
+    }, false);
+
+  if (!hasLogout) {
+    // setup admin menu
+    const logoutItem = {
+      icon: faSignOut,
+      onClick: () => {
+        removeToken();
+        logoutCB();
+      },
+      title: "Logout",
+    };
+    admin.push(logoutItem);
+  }
+
+  const userItem = {
+    children: admin,
+    icon: faUser,
+    title: getGreeting(user),
+  };
+
+  return (
+    <nav>
+      <div key="main" className="menu main">
+        {generateMenu("", main)}
+      </div>
+      <div key="admin" className="menu admin">
+        {generateMenu("", [ userItem ])}
+      </div>
+    </nav>
+  );
+};
 
 const Header = ({ config, logoutCB, routes }) => {
   const { user } = config;

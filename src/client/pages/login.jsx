@@ -5,7 +5,6 @@ import React, { useState } from "react";
 //assets
 import "../styles/pages/login.scss";
 
-// TODO: grid layout (50% of screen)
 const Page = ({ loginCB }) => {
   const [
     username,

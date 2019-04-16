@@ -1,3 +1,7 @@
+/* stylelint-disable color-no-hex */
+$color--footer-text: #fff;
+/* stylelint-enable */
+
 @import "../colors";
 @import "../mixins";
 
@@ -8,4 +12,8 @@
   padding: 0 1em;
   @include align-vertical;
   @include font-size(0.75);
+
+  .credits {
+    margin-left: auto;
+  }
 }

@@ -2,6 +2,7 @@
 @import "../mixins";
 
 .login.contents {
+  display: grid;
   grid-template-areas: ". form .";
   grid-template-columns: 0 auto 0;
   margin: 2em;

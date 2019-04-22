@@ -6,8 +6,7 @@ import { App } from "./components";
 import { HomePage } from "./pages";
 
 // assets
-import "./styles/index.scss";
-// import { faAmbulance, faAtom } from "@fortawesome/pro-regular-svg-icons";
+import packageJson from "../../package.json";
 
 const routes = {
   admin: [],
@@ -21,4 +20,7 @@ const routes = {
   ],
 };
 
-ReactDOM.render(<App routes={routes} />, document.getElementById("root"));
+ReactDOM.render(
+  <App routes={routes} title={packageJson.app.title} version={packageJson.version} />,
+  document.getElementById("root"),
+);

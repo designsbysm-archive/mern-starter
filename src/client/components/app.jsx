@@ -8,8 +8,7 @@ import { Footer, Header } from "./index";
 import { LoginPage } from "../pages";
 
 // assets
-import "../styles/app.scss";
-import packageJson from "../../../package.json";
+import "../styles/components/app.scss";
 
 const getRoutes = (isAuthenticated, base, routes) =>
   routes.map(route => {
@@ -35,7 +34,7 @@ const getRoutes = (isAuthenticated, base, routes) =>
     return <Route exact key={path} path={path} component={component} />;
   });
 
-const App = ({ routes }) => {
+const App = ({ routes, title, version }) => {
   const [
     config,
     setConfig, 
@@ -63,36 +62,34 @@ const App = ({ routes }) => {
 
   return (
     <Router>
-      <>
-        <Header config={config} logoutCB={() => setAuthenticated(false)} routes={routes} />
-        <Switch>
-          {getRoutes(isAuthenticated, "", routes.admin)}
-          {getRoutes(isAuthenticated, "", routes.main)}
-          <Route
-            path="/login"
-            component={props => (
-              <LoginPage
-                loginCB={() => {
-                  const { from } = props.location.state || { from: { pathname: "/" } };
+      <Header config={config} logoutCB={() => setAuthenticated(false)} routes={routes} />
+      <Switch>
+        {getRoutes(isAuthenticated, "", routes.admin)}
+        {getRoutes(isAuthenticated, "", routes.main)}
+        <Route
+          path="/login"
+          component={props => (
+            <LoginPage
+              loginCB={() => {
+                const { from } = props.location.state || { from: { pathname: "/" } };
 
-                  setAuthenticated(true);
-                  props.history.push(from.pathname || "/");
-                }}
-              />
-            )}
-          />
-          <Route
-            render={props => {
-              const isHome = props.location.pathname === "/";
+                setAuthenticated(true);
+                props.history.push(from.pathname || "/");
+              }}
+            />
+          )}
+        />
+        <Route
+          render={props => {
+            const isHome = props.location.pathname === "/";
 
-              if (!isHome) {
-                return <Redirect to="/" />;
-              }
-            }}
-          />
-        </Switch>
-        <Footer title={`${packageJson.app.title}`} version={packageJson.version} />
-      </>
+            if (!isHome) {
+              return <Redirect to="/" />;
+            }
+          }}
+        />
+      </Switch>
+      <Footer title={title} version={version} />
     </Router>
   );
 };

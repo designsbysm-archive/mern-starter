@@ -138,7 +138,7 @@ const Nav = ({ logoutCB, routes, user }) => {
 };
 
 const Header = ({ config, logoutCB, routes }) => {
-  const { user } = config;
+  const { user } = config || {};
 
   return (
     <header>

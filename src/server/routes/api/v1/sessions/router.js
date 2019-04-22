@@ -1,4 +1,4 @@
-import { login, logout, saml, samlResponse, valid } from "./controller";
+import { login, logout, valid } from "./controller";
 import express from "express";
 import { validateJWT } from "../../../../middleware/validate";
 
@@ -9,12 +9,6 @@ router.route("/login")
 
 router.route("/logout")
   .post(validateJWT, logout);
-
-router.route("/saml")
-  .get(saml);
-
-router.route("/saml/response")
-  .post(samlResponse);
 
 router.route("/valid")
   .post(validateJWT, valid);

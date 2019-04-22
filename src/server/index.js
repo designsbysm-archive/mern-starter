@@ -9,6 +9,8 @@ import routes from "./routes";
 import session from "express-session";
 import memoryStore from "memorystore";
 
+// console.log(routes);
+
 const app = express();
 const MemoryStore = memoryStore(session);
 

@@ -62,7 +62,7 @@
     "build:server": "babel src/server -d build/server",
     "lint": "run-s lint:prettier lint:js lint:scss",
     "lint:js": "eslint --fix './src/**/*.{js,jsx}'",
-    "lint:prettier": "prettier --write './src/**/*.{js,jsx}'",
+    "lint:prettier": "prettier --write './src/**/*.{css,js,jsx,scss}'",
     "lint:scss": "stylelint --fix './src/**/*.{css,scss}'",
     "prebuild": "rm -rf build",
     "start": "run-p server client"

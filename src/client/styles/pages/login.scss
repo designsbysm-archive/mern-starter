@@ -1,6 +1,11 @@
 @import "../colors";
 @import "../mixins";
 
+/* stylelint-disable color-no-hex */
+$color--button-text: #fff;
+$color--input-border: 1px solid #ccc;
+/* stylelint-enable */
+
 .login.contents {
   display: grid;
   grid-template-areas: ". form .";
@@ -29,7 +34,7 @@
     }
 
     input {
-      border: 1px solid #ccc;
+      border: $color--input-border;
       border-radius: 0.25em;
       padding: 1em;
       width: calc(100% - 2em - 2px);
@@ -40,7 +45,7 @@
   button {
     background-color: $color--branding-primary;
     border-radius: 0.25em;
-    color: #fff;
+    color: $color--button-text;
     cursor: pointer;
     padding: 1em 2em;
     text-transform: uppercase;

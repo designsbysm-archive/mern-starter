@@ -1,9 +1,9 @@
+@import "../colors";
+@import "../mixins";
+
 /* stylelint-disable color-no-hex */
 $color--footer-text: #fff;
 /* stylelint-enable */
-
-@import "../colors";
-@import "../mixins";
 
 .container > footer {
   background: $color--branding-primary;

@@ -1,3 +1,6 @@
+@import "../colors";
+@import "../mixins";
+
 /* stylelint-disable color-no-hex */
 $color--header-text: #fff;
 $color--nav-hover: #f6f6f6;
@@ -7,97 +10,94 @@ $color--dropdown-border: rgba(0, 0, 0, 0.15);
 $color--dropdown-shadow: rgba(0, 0, 0, 0.175);
 /* stylelint-enable */
 
-@import "../colors";
-@import "../mixins";
-
 .container > header {
   background: $color--branding-primary;
   color: $color--header-text;
   display: flex;
   grid-area: header;
   padding: 0 1em;
+}
 
-  .logo {
-    height: 65px;
-    margin-right: 1em;
+.header-logo {
+  height: 65px;
+  margin-right: 1em;
 
-    img {
-      height: 100%;
+  img {
+    height: 100%;
+  }
+}
+
+.header-nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header-nav-menu {
+  display: flex;
+
+  &.admin {
+    .dropdown {
+      right: 0;
+    }
+  }
+}
+
+.header-menu-item {
+  height: 100%;
+  @include animate-property(background-color);
+
+  a,
+  .link {
+    color: $color--header-text;
+    cursor: pointer;
+    height: 100%;
+    padding: 0 1em;
+    text-decoration: none;
+    @include align-vertical;
+
+    .caret {
+      margin-left: 0.5em;
+    }
+
+    .icon {
+      margin-right: 1em;
     }
   }
 
-  nav {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
 
-    .menu {
-      display: flex;
+.header-menu-dropdown {
+  background: $color--dropdown-background;
+  border: 1px solid $color--dropdown-border;
+  border-radius: 4px;
+  box-shadow: 0 6px 12px $color--dropdown-shadow;
+  display: none;
+  margin: 0;
+  min-width: 10em;
+  padding: 1em 0;
+  position: absolute;
 
-      .menu-item {
-        height: 100%;
-        @include animate-property(background-color);
+  &.show {
+    display: block;
+  }
 
-        a,
-        .link {
-          color: $color--header-text;
-          cursor: pointer;
-          height: 100%;
-          padding: 0 1em;
-          text-decoration: none;
-          @include align-vertical;
+  a,
+  .link {
+    color: $color--nav-text;
+    padding: 0.6em 1em;
+    text-decoration: none;
 
-          .caret {
-            margin-left: 0.5em;
-          }
-
-          .icon {
-            margin-right: 1em;
-          }
-        }
-
-        &:hover {
-          background-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .dropdown {
-          background: $color--dropdown-background;
-          border: 1px solid $color--dropdown-border;
-          border-radius: 4px;
-          box-shadow: 0 6px 12px $color--dropdown-shadow;
-          display: none;
-          margin: 0;
-          min-width: 10em;
-          padding: 1em 0;
-          position: absolute;
-
-          &.show {
-            display: block;
-          }
-
-          a,
-          .link {
-            color: $color--nav-text;
-            padding: 0.6em 1em;
-            text-decoration: none;
-
-            &:hover {
-              background: $color--nav-hover;
-            }
-          }
-
-          .seperator {
-            border-top: 1px solid $color--dropdown-border;
-            margin: 0.5em 0;
-          }
-        }
-      }
-
-      &.admin {
-        .dropdown {
-          right: 0;
-        }
-      }
+    &:hover {
+      background: $color--nav-hover;
     }
+  }
+
+  .seperator {
+    border-top: 1px solid $color--dropdown-border;
+    margin: 0.5em 0;
   }
 }

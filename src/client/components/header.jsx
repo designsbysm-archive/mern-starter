@@ -32,7 +32,7 @@ const Dropdown = (base, route) => {
   return (
     <div
       key={route.title}
-      className="menu-item"
+      className="header-menu-item"
       onClick={() => {
         setVisible(!visible);
       }}
@@ -48,7 +48,9 @@ const Dropdown = (base, route) => {
         {route.title}
         <FontAwesomeIcon className="caret" icon={faCaretDown} />
       </span>
-      <div className={`dropdown ${visible ? "show" : "hide"}`}>{generateMenu(route.url, route.children)}</div>
+      <div className={`header-menu-dropdown ${visible ? "show" : "hide"}`}>
+        {generateMenu(route.url, route.children)}
+      </div>
     </div>
   );
 };
@@ -68,7 +70,7 @@ const generateMenu = (base, menu) =>
   });
 
 const Logo = ({ image }) => (
-  <Link to="/" className="logo">
+  <Link to="/" className="header-logo">
     <img src={image} alt="SM Logo" />
   </Link>
 );
@@ -79,14 +81,12 @@ const MenuItem = (base, route) => {
   return route.title === "seperator" ? (
     <div className="seperator" key={"seperator" + Math.random()} />
   ) : (
-    <div className="menu-item" key={route.title + route.url}>
+    <div className="header-menu-item" key={route.title + route.url}>
       {route.onClick ? (
-        <div className="menu-item">
-          <span className="link" onClick={route.onClick}>
-            {route.icon ? <FontAwesomeIcon className="icon" icon={route.icon} fixedWidth /> : null}
-            Logout
-          </span>
-        </div>
+        <span className="link" onClick={route.onClick}>
+          {route.icon ? <FontAwesomeIcon className="icon" icon={route.icon} fixedWidth /> : null}
+          Logout
+        </span>
       ) : (
         <NavLink exact activeClassName="current" key={route.url} to={path}>
           {route.icon ? <FontAwesomeIcon className="icon" icon={route.icon} fixedWidth /> : null}
@@ -126,11 +126,11 @@ const Nav = ({ logoutCB, routes, user }) => {
   };
 
   return (
-    <nav>
-      <div key="main" className="menu main">
+    <nav className="header-nav">
+      <div key="main" className="header-nav-menu main">
         {generateMenu("", main)}
       </div>
-      <div key="admin" className="menu admin">
+      <div key="admin" className="header-nav-menu admin">
         {generateMenu("", [ userItem ])}
       </div>
     </nav>

@@ -3,11 +3,7 @@
   display: flex;
 }
 
-@mixin animate-property(
-  $property,
-  $duration: 0.3s,
-  $mode: ease-in-out
-) {
+@mixin animate-property($property, $duration: 0.3s, $mode: ease-in-out) {
   transition: $property $duration $mode;
 }
 

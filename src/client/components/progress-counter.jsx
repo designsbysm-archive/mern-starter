@@ -33,7 +33,7 @@ const Progress = ({ close, max, title, value }) => {
           strokeDashoffset={-`${oneHundredPercent - oneHundredPercent * precent}`}
         />
       </svg>
-      <div className="title">{`${title || "Running"}: ${value}`}</div>
+      <div className="title">{`${title || "Running"}: ${value || "###"}`}</div>
     </div>
   );
 };

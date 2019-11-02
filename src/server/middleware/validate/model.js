@@ -1,4 +1,4 @@
-import Boom from "boom";
+import Boom from "@hapi/boom";
 
 export default (parameter, getModel) => (req, res, next) => {
   const schema = req.params[parameter];

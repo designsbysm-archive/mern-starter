@@ -1,4 +1,4 @@
-import Boom from "boom";
+import Boom from "@hapi/boom";
 
 const boom = (req, res, next) => {
   const { code } = req.params;

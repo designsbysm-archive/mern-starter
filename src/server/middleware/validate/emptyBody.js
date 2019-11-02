@@ -1,4 +1,4 @@
-import Boom from "boom";
+import Boom from "@hapi/boom";
 import isEmpty from "../../tools/isEmpty";
 
 export default (req, res, next) => {

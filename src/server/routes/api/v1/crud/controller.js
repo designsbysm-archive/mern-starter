@@ -1,4 +1,4 @@
-import Boom from "boom";
+import Boom from "@hapi/boom";
 import getModel from "../../../../tools/getModel";
 import jsonStream from "JSONStream";
 import parseFindQuery from "../../../../tools/parseFindQuery";

@@ -1,4 +1,4 @@
-import Boom from "boom";
+import Boom from "@hapi/boom";
 import Logger from "../../../../tools/fileLogger";
 import passport from "passport";
 import User from "../../../../models/user";

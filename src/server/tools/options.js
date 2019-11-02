@@ -1,4 +1,4 @@
-import Boom from "boom";
+import Boom from "@hapi/boom";
 import Model from "../models/option";
 
 const readOption = key => {

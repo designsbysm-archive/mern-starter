@@ -1,4 +1,4 @@
-import Boom from "boom";
+import Boom from "@hapi/boom";
 import Logger from "../tools/fileLogger";
 
 const logger = Logger("errors");

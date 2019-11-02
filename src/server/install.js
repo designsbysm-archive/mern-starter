@@ -1,4 +1,4 @@
-import User from "./models/User";
+import User from "./models/user";
 
 // create sample admin user
 User.findOne({ username: "test" }, (err, doc) => {

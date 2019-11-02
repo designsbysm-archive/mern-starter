@@ -1,7 +1,7 @@
 import Boom from "boom";
 import Logger from "../../../../tools/fileLogger";
 import passport from "passport";
-import User from "../../../../models/User";
+import User from "../../../../models/user";
 
 const logger = Logger("authentication");
 

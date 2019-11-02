@@ -1,5 +1,5 @@
 import Boom from "boom";
-import Model from "../models/Option";
+import Model from "../models/option";
 import { updateOption } from "./options";
 
 const clearAuthToken = async key => {

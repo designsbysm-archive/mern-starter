@@ -2,7 +2,7 @@ import { passportJWT, passportLocal, passportSetup } from "../middleware/passpor
 import { secretBcrypt } from "../config";
 import api from "./api";
 import express from "express";
-import Model from "../models/User";
+import Model from "../models/user";
 import path from "path";
 
 passportSetup();

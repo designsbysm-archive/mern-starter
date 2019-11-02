@@ -1,4 +1,4 @@
-import User from "../../../../models/User";
+import User from "../../../../models/user";
 import { secretBcrypt } from "../../../../config";
 
 const create = (req, res, next) => {

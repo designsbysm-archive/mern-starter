@@ -1,5 +1,5 @@
-import User from "../models/User";
-import Vehicle from "../models/Vehicle";
+import User from "../models/user";
+import Vehicle from "../models/vehicle";
 
 export default schema => {
   let Model = null;

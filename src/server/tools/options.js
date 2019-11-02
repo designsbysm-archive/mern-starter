@@ -1,5 +1,5 @@
 import Boom from "boom";
-import Model from "../models/Option";
+import Model from "../models/option";
 
 const readOption = key => {
   return Model.findOne({ key })

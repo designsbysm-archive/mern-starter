@@ -1,13 +1,13 @@
 // import "./install";
+import { environment, port, secretSession } from "./config";
 import apiLogger from "./middleware/apiLogger";
 import errors from "./middleware/errorHandler";
-import { environment, port, secretSession } from "./config";
 import express from "express";
 import helmet from "helmet";
+import memoryStore from "memorystore";
 import passport from "passport";
 import routes from "./routes";
 import session from "express-session";
-import memoryStore from "memorystore";
 
 // console.log(routes);
 
@@ -28,7 +28,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.json({ limit: "10mb" }));
+app.use(express.json({ limit: "1mb" }));
 // app.use(express.urlencoded({ extended: false }));
 app.use(routes);
 app.use(errors);

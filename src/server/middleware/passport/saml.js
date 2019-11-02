@@ -28,7 +28,7 @@ export default ({ Model, secret }) => {
       {
         callbackUrl: callbackURL,
         cert: fs.readFileSync(certFile, "utf-8"),
-        entryPoint: entryPoint,
+        entryPoint,
         issuer: applicationID,
         signatureAlgorithm: "sha256",
       },

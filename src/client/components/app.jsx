@@ -71,7 +71,9 @@ const App = ({ routes, title, version }) => {
           component={props => (
             <LoginPage
               loginCB={() => {
-                const { from } = props.location.state || { from: { pathname: "/" } };
+                const { from } = props.location.state || {
+                  from: { pathname: "/" },
+                };
 
                 setAuthenticated(true);
                 props.history.push(from.pathname || "/");

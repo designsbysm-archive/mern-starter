@@ -29,7 +29,7 @@ const login = (req, res, next) => {
       level: "info",
       stratagy: "basic",
       timestamp: new Date(),
-      username: username,
+      username,
     });
 
     res.json({
@@ -52,7 +52,7 @@ const logout = (req, res, next) => {
       level: "info",
       stratagy: type,
       timestamp: new Date(),
-      username: username,
+      username,
     });
 
     // invalidate the current token

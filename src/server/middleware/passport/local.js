@@ -8,7 +8,7 @@ export default ({ Model, secret }) => {
     new LocalStrategy((username, password, done) => {
       Model.findOne({
         type: "basic",
-        username: username,
+        username,
       })
         .collation({
           locale: "en",

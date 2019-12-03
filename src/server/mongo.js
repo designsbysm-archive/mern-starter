@@ -11,6 +11,7 @@ if (!process.env.MONGO_CONNECTION) {
 mongoose.Promise = bluebird.Promise;
 mongoose.connect(process.env.MONGO_CONNECTION, {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
 export default mongoose;

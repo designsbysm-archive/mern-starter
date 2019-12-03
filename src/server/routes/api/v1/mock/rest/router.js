@@ -1,4 +1,4 @@
-import { validateJWT } from "../../../../middleware/validate";
+import { validateJWT } from "../../../../../middleware/validate";
 import express from "express";
 
 const router = express.Router({ mergeParams: true });

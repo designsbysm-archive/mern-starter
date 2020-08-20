@@ -1,5 +1,5 @@
 {
-  "name": "@designsbysm/mock-server",
+  "name": "@designsbysm/mern-starter",
   "app": {
     "title": "Mock Server",
     "initials": "MS"
